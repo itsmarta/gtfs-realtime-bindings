@@ -295,6 +295,7 @@ $root.transit_realtime = (function() {
          * @property {string} gtfsRealtimeVersion FeedHeader gtfsRealtimeVersion
          * @property {transit_realtime.FeedHeader.Incrementality|null} [incrementality] FeedHeader incrementality
          * @property {number|Long|null} [timestamp] FeedHeader timestamp
+         * @property {string|null} [feedVersion] FeedHeader feedVersion
          */
 
         /**
@@ -337,6 +338,14 @@ $root.transit_realtime = (function() {
         FeedHeader.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
         /**
+         * FeedHeader feedVersion.
+         * @member {string} feedVersion
+         * @memberof transit_realtime.FeedHeader
+         * @instance
+         */
+        FeedHeader.prototype.feedVersion = "";
+
+        /**
          * Creates a new FeedHeader instance using the specified properties.
          * @function create
          * @memberof transit_realtime.FeedHeader
@@ -365,6 +374,8 @@ $root.transit_realtime = (function() {
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.incrementality);
             if (message.timestamp != null && Object.hasOwnProperty.call(message, "timestamp"))
                 writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.timestamp);
+            if (message.feedVersion != null && Object.hasOwnProperty.call(message, "feedVersion"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.feedVersion);
             return writer;
         };
 
@@ -409,6 +420,10 @@ $root.transit_realtime = (function() {
                     }
                 case 3: {
                         message.timestamp = reader.uint64();
+                        break;
+                    }
+                case 4: {
+                        message.feedVersion = reader.string();
                         break;
                     }
                 default:
@@ -461,6 +476,9 @@ $root.transit_realtime = (function() {
             if (message.timestamp != null && message.hasOwnProperty("timestamp"))
                 if (!$util.isInteger(message.timestamp) && !(message.timestamp && $util.isInteger(message.timestamp.low) && $util.isInteger(message.timestamp.high)))
                     return "timestamp: integer|Long expected";
+            if (message.feedVersion != null && message.hasOwnProperty("feedVersion"))
+                if (!$util.isString(message.feedVersion))
+                    return "feedVersion: string expected";
             return null;
         };
 
@@ -503,6 +521,8 @@ $root.transit_realtime = (function() {
                     message.timestamp = object.timestamp;
                 else if (typeof object.timestamp === "object")
                     message.timestamp = new $util.LongBits(object.timestamp.low >>> 0, object.timestamp.high >>> 0).toNumber(true);
+            if (object.feedVersion != null)
+                message.feedVersion = String(object.feedVersion);
             return message;
         };
 
@@ -527,6 +547,7 @@ $root.transit_realtime = (function() {
                     object.timestamp = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.timestamp = options.longs === String ? "0" : 0;
+                object.feedVersion = "";
             }
             if (message.gtfsRealtimeVersion != null && message.hasOwnProperty("gtfsRealtimeVersion"))
                 object.gtfsRealtimeVersion = message.gtfsRealtimeVersion;
@@ -537,6 +558,8 @@ $root.transit_realtime = (function() {
                     object.timestamp = options.longs === String ? String(message.timestamp) : message.timestamp;
                 else
                     object.timestamp = options.longs === String ? $util.Long.prototype.toString.call(message.timestamp) : options.longs === Number ? new $util.LongBits(message.timestamp.low >>> 0, message.timestamp.high >>> 0).toNumber(true) : message.timestamp;
+            if (message.feedVersion != null && message.hasOwnProperty("feedVersion"))
+                object.feedVersion = message.feedVersion;
             return object;
         };
 
@@ -594,6 +617,9 @@ $root.transit_realtime = (function() {
          * @property {transit_realtime.ITripUpdate|null} [tripUpdate] FeedEntity tripUpdate
          * @property {transit_realtime.IVehiclePosition|null} [vehicle] FeedEntity vehicle
          * @property {transit_realtime.IAlert|null} [alert] FeedEntity alert
+         * @property {transit_realtime.IShape|null} [shape] FeedEntity shape
+         * @property {transit_realtime.IStop|null} [stop] FeedEntity stop
+         * @property {transit_realtime.ITripModifications|null} [tripModifications] FeedEntity tripModifications
          */
 
         /**
@@ -652,6 +678,30 @@ $root.transit_realtime = (function() {
         FeedEntity.prototype.alert = null;
 
         /**
+         * FeedEntity shape.
+         * @member {transit_realtime.IShape|null|undefined} shape
+         * @memberof transit_realtime.FeedEntity
+         * @instance
+         */
+        FeedEntity.prototype.shape = null;
+
+        /**
+         * FeedEntity stop.
+         * @member {transit_realtime.IStop|null|undefined} stop
+         * @memberof transit_realtime.FeedEntity
+         * @instance
+         */
+        FeedEntity.prototype.stop = null;
+
+        /**
+         * FeedEntity tripModifications.
+         * @member {transit_realtime.ITripModifications|null|undefined} tripModifications
+         * @memberof transit_realtime.FeedEntity
+         * @instance
+         */
+        FeedEntity.prototype.tripModifications = null;
+
+        /**
          * Creates a new FeedEntity instance using the specified properties.
          * @function create
          * @memberof transit_realtime.FeedEntity
@@ -684,6 +734,12 @@ $root.transit_realtime = (function() {
                 $root.transit_realtime.VehiclePosition.encode(message.vehicle, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             if (message.alert != null && Object.hasOwnProperty.call(message, "alert"))
                 $root.transit_realtime.Alert.encode(message.alert, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.shape != null && Object.hasOwnProperty.call(message, "shape"))
+                $root.transit_realtime.Shape.encode(message.shape, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.stop != null && Object.hasOwnProperty.call(message, "stop"))
+                $root.transit_realtime.Stop.encode(message.stop, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.tripModifications != null && Object.hasOwnProperty.call(message, "tripModifications"))
+                $root.transit_realtime.TripModifications.encode(message.tripModifications, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             return writer;
         };
 
@@ -736,6 +792,18 @@ $root.transit_realtime = (function() {
                     }
                 case 5: {
                         message.alert = $root.transit_realtime.Alert.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.shape = $root.transit_realtime.Shape.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 7: {
+                        message.stop = $root.transit_realtime.Stop.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 8: {
+                        message.tripModifications = $root.transit_realtime.TripModifications.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -795,6 +863,21 @@ $root.transit_realtime = (function() {
                 if (error)
                     return "alert." + error;
             }
+            if (message.shape != null && message.hasOwnProperty("shape")) {
+                var error = $root.transit_realtime.Shape.verify(message.shape);
+                if (error)
+                    return "shape." + error;
+            }
+            if (message.stop != null && message.hasOwnProperty("stop")) {
+                var error = $root.transit_realtime.Stop.verify(message.stop);
+                if (error)
+                    return "stop." + error;
+            }
+            if (message.tripModifications != null && message.hasOwnProperty("tripModifications")) {
+                var error = $root.transit_realtime.TripModifications.verify(message.tripModifications);
+                if (error)
+                    return "tripModifications." + error;
+            }
             return null;
         };
 
@@ -829,6 +912,21 @@ $root.transit_realtime = (function() {
                     throw TypeError(".transit_realtime.FeedEntity.alert: object expected");
                 message.alert = $root.transit_realtime.Alert.fromObject(object.alert);
             }
+            if (object.shape != null) {
+                if (typeof object.shape !== "object")
+                    throw TypeError(".transit_realtime.FeedEntity.shape: object expected");
+                message.shape = $root.transit_realtime.Shape.fromObject(object.shape);
+            }
+            if (object.stop != null) {
+                if (typeof object.stop !== "object")
+                    throw TypeError(".transit_realtime.FeedEntity.stop: object expected");
+                message.stop = $root.transit_realtime.Stop.fromObject(object.stop);
+            }
+            if (object.tripModifications != null) {
+                if (typeof object.tripModifications !== "object")
+                    throw TypeError(".transit_realtime.FeedEntity.tripModifications: object expected");
+                message.tripModifications = $root.transit_realtime.TripModifications.fromObject(object.tripModifications);
+            }
             return message;
         };
 
@@ -851,6 +949,9 @@ $root.transit_realtime = (function() {
                 object.tripUpdate = null;
                 object.vehicle = null;
                 object.alert = null;
+                object.shape = null;
+                object.stop = null;
+                object.tripModifications = null;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -862,6 +963,12 @@ $root.transit_realtime = (function() {
                 object.vehicle = $root.transit_realtime.VehiclePosition.toObject(message.vehicle, options);
             if (message.alert != null && message.hasOwnProperty("alert"))
                 object.alert = $root.transit_realtime.Alert.toObject(message.alert, options);
+            if (message.shape != null && message.hasOwnProperty("shape"))
+                object.shape = $root.transit_realtime.Shape.toObject(message.shape, options);
+            if (message.stop != null && message.hasOwnProperty("stop"))
+                object.stop = $root.transit_realtime.Stop.toObject(message.stop, options);
+            if (message.tripModifications != null && message.hasOwnProperty("tripModifications"))
+                object.tripModifications = $root.transit_realtime.TripModifications.toObject(message.tripModifications, options);
             return object;
         };
 
@@ -1271,6 +1378,7 @@ $root.transit_realtime = (function() {
              * @property {number|null} [delay] StopTimeEvent delay
              * @property {number|Long|null} [time] StopTimeEvent time
              * @property {number|null} [uncertainty] StopTimeEvent uncertainty
+             * @property {number|Long|null} [scheduledTime] StopTimeEvent scheduledTime
              */
 
             /**
@@ -1313,6 +1421,14 @@ $root.transit_realtime = (function() {
             StopTimeEvent.prototype.uncertainty = 0;
 
             /**
+             * StopTimeEvent scheduledTime.
+             * @member {number|Long} scheduledTime
+             * @memberof transit_realtime.TripUpdate.StopTimeEvent
+             * @instance
+             */
+            StopTimeEvent.prototype.scheduledTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
              * Creates a new StopTimeEvent instance using the specified properties.
              * @function create
              * @memberof transit_realtime.TripUpdate.StopTimeEvent
@@ -1342,6 +1458,8 @@ $root.transit_realtime = (function() {
                     writer.uint32(/* id 2, wireType 0 =*/16).int64(message.time);
                 if (message.uncertainty != null && Object.hasOwnProperty.call(message, "uncertainty"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.uncertainty);
+                if (message.scheduledTime != null && Object.hasOwnProperty.call(message, "scheduledTime"))
+                    writer.uint32(/* id 4, wireType 0 =*/32).int64(message.scheduledTime);
                 return writer;
             };
 
@@ -1388,6 +1506,10 @@ $root.transit_realtime = (function() {
                             message.uncertainty = reader.int32();
                             break;
                         }
+                    case 4: {
+                            message.scheduledTime = reader.int64();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1432,6 +1554,9 @@ $root.transit_realtime = (function() {
                 if (message.uncertainty != null && message.hasOwnProperty("uncertainty"))
                     if (!$util.isInteger(message.uncertainty))
                         return "uncertainty: integer expected";
+                if (message.scheduledTime != null && message.hasOwnProperty("scheduledTime"))
+                    if (!$util.isInteger(message.scheduledTime) && !(message.scheduledTime && $util.isInteger(message.scheduledTime.low) && $util.isInteger(message.scheduledTime.high)))
+                        return "scheduledTime: integer|Long expected";
                 return null;
             };
 
@@ -1460,6 +1585,15 @@ $root.transit_realtime = (function() {
                         message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
                 if (object.uncertainty != null)
                     message.uncertainty = object.uncertainty | 0;
+                if (object.scheduledTime != null)
+                    if ($util.Long)
+                        (message.scheduledTime = $util.Long.fromValue(object.scheduledTime)).unsigned = false;
+                    else if (typeof object.scheduledTime === "string")
+                        message.scheduledTime = parseInt(object.scheduledTime, 10);
+                    else if (typeof object.scheduledTime === "number")
+                        message.scheduledTime = object.scheduledTime;
+                    else if (typeof object.scheduledTime === "object")
+                        message.scheduledTime = new $util.LongBits(object.scheduledTime.low >>> 0, object.scheduledTime.high >>> 0).toNumber();
                 return message;
             };
 
@@ -1484,6 +1618,11 @@ $root.transit_realtime = (function() {
                     } else
                         object.time = options.longs === String ? "0" : 0;
                     object.uncertainty = 0;
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.scheduledTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.scheduledTime = options.longs === String ? "0" : 0;
                 }
                 if (message.delay != null && message.hasOwnProperty("delay"))
                     object.delay = message.delay;
@@ -1494,6 +1633,11 @@ $root.transit_realtime = (function() {
                         object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
                 if (message.uncertainty != null && message.hasOwnProperty("uncertainty"))
                     object.uncertainty = message.uncertainty;
+                if (message.scheduledTime != null && message.hasOwnProperty("scheduledTime"))
+                    if (typeof message.scheduledTime === "number")
+                        object.scheduledTime = options.longs === String ? String(message.scheduledTime) : message.scheduledTime;
+                    else
+                        object.scheduledTime = options.longs === String ? $util.Long.prototype.toString.call(message.scheduledTime) : options.longs === Number ? new $util.LongBits(message.scheduledTime.low >>> 0, message.scheduledTime.high >>> 0).toNumber() : message.scheduledTime;
                 return object;
             };
 
@@ -1536,6 +1680,7 @@ $root.transit_realtime = (function() {
              * @property {string|null} [stopId] StopTimeUpdate stopId
              * @property {transit_realtime.TripUpdate.IStopTimeEvent|null} [arrival] StopTimeUpdate arrival
              * @property {transit_realtime.TripUpdate.IStopTimeEvent|null} [departure] StopTimeUpdate departure
+             * @property {transit_realtime.VehiclePosition.OccupancyStatus|null} [departureOccupancyStatus] StopTimeUpdate departureOccupancyStatus
              * @property {transit_realtime.TripUpdate.StopTimeUpdate.ScheduleRelationship|null} [scheduleRelationship] StopTimeUpdate scheduleRelationship
              * @property {transit_realtime.TripUpdate.StopTimeUpdate.IStopTimeProperties|null} [stopTimeProperties] StopTimeUpdate stopTimeProperties
              */
@@ -1586,6 +1731,14 @@ $root.transit_realtime = (function() {
              * @instance
              */
             StopTimeUpdate.prototype.departure = null;
+
+            /**
+             * StopTimeUpdate departureOccupancyStatus.
+             * @member {transit_realtime.VehiclePosition.OccupancyStatus} departureOccupancyStatus
+             * @memberof transit_realtime.TripUpdate.StopTimeUpdate
+             * @instance
+             */
+            StopTimeUpdate.prototype.departureOccupancyStatus = 0;
 
             /**
              * StopTimeUpdate scheduleRelationship.
@@ -1639,6 +1792,8 @@ $root.transit_realtime = (function() {
                     writer.uint32(/* id 5, wireType 0 =*/40).int32(message.scheduleRelationship);
                 if (message.stopTimeProperties != null && Object.hasOwnProperty.call(message, "stopTimeProperties"))
                     $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.encode(message.stopTimeProperties, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                if (message.departureOccupancyStatus != null && Object.hasOwnProperty.call(message, "departureOccupancyStatus"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).int32(message.departureOccupancyStatus);
                 return writer;
             };
 
@@ -1687,6 +1842,10 @@ $root.transit_realtime = (function() {
                         }
                     case 3: {
                             message.departure = $root.transit_realtime.TripUpdate.StopTimeEvent.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 7: {
+                            message.departureOccupancyStatus = reader.int32();
                             break;
                         }
                     case 5: {
@@ -1748,6 +1907,21 @@ $root.transit_realtime = (function() {
                     if (error)
                         return "departure." + error;
                 }
+                if (message.departureOccupancyStatus != null && message.hasOwnProperty("departureOccupancyStatus"))
+                    switch (message.departureOccupancyStatus) {
+                    default:
+                        return "departureOccupancyStatus: enum value expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                        break;
+                    }
                 if (message.scheduleRelationship != null && message.hasOwnProperty("scheduleRelationship"))
                     switch (message.scheduleRelationship) {
                     default:
@@ -1791,6 +1965,50 @@ $root.transit_realtime = (function() {
                     if (typeof object.departure !== "object")
                         throw TypeError(".transit_realtime.TripUpdate.StopTimeUpdate.departure: object expected");
                     message.departure = $root.transit_realtime.TripUpdate.StopTimeEvent.fromObject(object.departure);
+                }
+                switch (object.departureOccupancyStatus) {
+                default:
+                    if (typeof object.departureOccupancyStatus === "number") {
+                        message.departureOccupancyStatus = object.departureOccupancyStatus;
+                        break;
+                    }
+                    break;
+                case "EMPTY":
+                case 0:
+                    message.departureOccupancyStatus = 0;
+                    break;
+                case "MANY_SEATS_AVAILABLE":
+                case 1:
+                    message.departureOccupancyStatus = 1;
+                    break;
+                case "FEW_SEATS_AVAILABLE":
+                case 2:
+                    message.departureOccupancyStatus = 2;
+                    break;
+                case "STANDING_ROOM_ONLY":
+                case 3:
+                    message.departureOccupancyStatus = 3;
+                    break;
+                case "CRUSHED_STANDING_ROOM_ONLY":
+                case 4:
+                    message.departureOccupancyStatus = 4;
+                    break;
+                case "FULL":
+                case 5:
+                    message.departureOccupancyStatus = 5;
+                    break;
+                case "NOT_ACCEPTING_PASSENGERS":
+                case 6:
+                    message.departureOccupancyStatus = 6;
+                    break;
+                case "NO_DATA_AVAILABLE":
+                case 7:
+                    message.departureOccupancyStatus = 7;
+                    break;
+                case "NOT_BOARDABLE":
+                case 8:
+                    message.departureOccupancyStatus = 8;
+                    break;
                 }
                 switch (object.scheduleRelationship) {
                 default:
@@ -1844,6 +2062,7 @@ $root.transit_realtime = (function() {
                     object.stopId = "";
                     object.scheduleRelationship = options.enums === String ? "SCHEDULED" : 0;
                     object.stopTimeProperties = null;
+                    object.departureOccupancyStatus = options.enums === String ? "EMPTY" : 0;
                 }
                 if (message.stopSequence != null && message.hasOwnProperty("stopSequence"))
                     object.stopSequence = message.stopSequence;
@@ -1857,6 +2076,8 @@ $root.transit_realtime = (function() {
                     object.scheduleRelationship = options.enums === String ? $root.transit_realtime.TripUpdate.StopTimeUpdate.ScheduleRelationship[message.scheduleRelationship] === undefined ? message.scheduleRelationship : $root.transit_realtime.TripUpdate.StopTimeUpdate.ScheduleRelationship[message.scheduleRelationship] : message.scheduleRelationship;
                 if (message.stopTimeProperties != null && message.hasOwnProperty("stopTimeProperties"))
                     object.stopTimeProperties = $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.toObject(message.stopTimeProperties, options);
+                if (message.departureOccupancyStatus != null && message.hasOwnProperty("departureOccupancyStatus"))
+                    object.departureOccupancyStatus = options.enums === String ? $root.transit_realtime.VehiclePosition.OccupancyStatus[message.departureOccupancyStatus] === undefined ? message.departureOccupancyStatus : $root.transit_realtime.VehiclePosition.OccupancyStatus[message.departureOccupancyStatus] : message.departureOccupancyStatus;
                 return object;
             };
 
@@ -1911,6 +2132,9 @@ $root.transit_realtime = (function() {
                  * @memberof transit_realtime.TripUpdate.StopTimeUpdate
                  * @interface IStopTimeProperties
                  * @property {string|null} [assignedStopId] StopTimeProperties assignedStopId
+                 * @property {string|null} [stopHeadsign] StopTimeProperties stopHeadsign
+                 * @property {transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType|null} [pickupType] StopTimeProperties pickupType
+                 * @property {transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType|null} [dropOffType] StopTimeProperties dropOffType
                  */
 
                 /**
@@ -1935,6 +2159,30 @@ $root.transit_realtime = (function() {
                  * @instance
                  */
                 StopTimeProperties.prototype.assignedStopId = "";
+
+                /**
+                 * StopTimeProperties stopHeadsign.
+                 * @member {string} stopHeadsign
+                 * @memberof transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties
+                 * @instance
+                 */
+                StopTimeProperties.prototype.stopHeadsign = "";
+
+                /**
+                 * StopTimeProperties pickupType.
+                 * @member {transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType} pickupType
+                 * @memberof transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties
+                 * @instance
+                 */
+                StopTimeProperties.prototype.pickupType = 0;
+
+                /**
+                 * StopTimeProperties dropOffType.
+                 * @member {transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType} dropOffType
+                 * @memberof transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties
+                 * @instance
+                 */
+                StopTimeProperties.prototype.dropOffType = 0;
 
                 /**
                  * Creates a new StopTimeProperties instance using the specified properties.
@@ -1962,6 +2210,12 @@ $root.transit_realtime = (function() {
                         writer = $Writer.create();
                     if (message.assignedStopId != null && Object.hasOwnProperty.call(message, "assignedStopId"))
                         writer.uint32(/* id 1, wireType 2 =*/10).string(message.assignedStopId);
+                    if (message.stopHeadsign != null && Object.hasOwnProperty.call(message, "stopHeadsign"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.stopHeadsign);
+                    if (message.pickupType != null && Object.hasOwnProperty.call(message, "pickupType"))
+                        writer.uint32(/* id 3, wireType 0 =*/24).int32(message.pickupType);
+                    if (message.dropOffType != null && Object.hasOwnProperty.call(message, "dropOffType"))
+                        writer.uint32(/* id 4, wireType 0 =*/32).int32(message.dropOffType);
                     return writer;
                 };
 
@@ -1998,6 +2252,18 @@ $root.transit_realtime = (function() {
                         switch (tag >>> 3) {
                         case 1: {
                                 message.assignedStopId = reader.string();
+                                break;
+                            }
+                        case 2: {
+                                message.stopHeadsign = reader.string();
+                                break;
+                            }
+                        case 3: {
+                                message.pickupType = reader.int32();
+                                break;
+                            }
+                        case 4: {
+                                message.dropOffType = reader.int32();
                                 break;
                             }
                         default:
@@ -2038,6 +2304,29 @@ $root.transit_realtime = (function() {
                     if (message.assignedStopId != null && message.hasOwnProperty("assignedStopId"))
                         if (!$util.isString(message.assignedStopId))
                             return "assignedStopId: string expected";
+                    if (message.stopHeadsign != null && message.hasOwnProperty("stopHeadsign"))
+                        if (!$util.isString(message.stopHeadsign))
+                            return "stopHeadsign: string expected";
+                    if (message.pickupType != null && message.hasOwnProperty("pickupType"))
+                        switch (message.pickupType) {
+                        default:
+                            return "pickupType: enum value expected";
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                            break;
+                        }
+                    if (message.dropOffType != null && message.hasOwnProperty("dropOffType"))
+                        switch (message.dropOffType) {
+                        default:
+                            return "dropOffType: enum value expected";
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                            break;
+                        }
                     return null;
                 };
 
@@ -2055,6 +2344,56 @@ $root.transit_realtime = (function() {
                     var message = new $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties();
                     if (object.assignedStopId != null)
                         message.assignedStopId = String(object.assignedStopId);
+                    if (object.stopHeadsign != null)
+                        message.stopHeadsign = String(object.stopHeadsign);
+                    switch (object.pickupType) {
+                    default:
+                        if (typeof object.pickupType === "number") {
+                            message.pickupType = object.pickupType;
+                            break;
+                        }
+                        break;
+                    case "REGULAR":
+                    case 0:
+                        message.pickupType = 0;
+                        break;
+                    case "NONE":
+                    case 1:
+                        message.pickupType = 1;
+                        break;
+                    case "PHONE_AGENCY":
+                    case 2:
+                        message.pickupType = 2;
+                        break;
+                    case "COORDINATE_WITH_DRIVER":
+                    case 3:
+                        message.pickupType = 3;
+                        break;
+                    }
+                    switch (object.dropOffType) {
+                    default:
+                        if (typeof object.dropOffType === "number") {
+                            message.dropOffType = object.dropOffType;
+                            break;
+                        }
+                        break;
+                    case "REGULAR":
+                    case 0:
+                        message.dropOffType = 0;
+                        break;
+                    case "NONE":
+                    case 1:
+                        message.dropOffType = 1;
+                        break;
+                    case "PHONE_AGENCY":
+                    case 2:
+                        message.dropOffType = 2;
+                        break;
+                    case "COORDINATE_WITH_DRIVER":
+                    case 3:
+                        message.dropOffType = 3;
+                        break;
+                    }
                     return message;
                 };
 
@@ -2071,10 +2410,20 @@ $root.transit_realtime = (function() {
                     if (!options)
                         options = {};
                     var object = {};
-                    if (options.defaults)
+                    if (options.defaults) {
                         object.assignedStopId = "";
+                        object.stopHeadsign = "";
+                        object.pickupType = options.enums === String ? "REGULAR" : 0;
+                        object.dropOffType = options.enums === String ? "REGULAR" : 0;
+                    }
                     if (message.assignedStopId != null && message.hasOwnProperty("assignedStopId"))
                         object.assignedStopId = message.assignedStopId;
+                    if (message.stopHeadsign != null && message.hasOwnProperty("stopHeadsign"))
+                        object.stopHeadsign = message.stopHeadsign;
+                    if (message.pickupType != null && message.hasOwnProperty("pickupType"))
+                        object.pickupType = options.enums === String ? $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType[message.pickupType] === undefined ? message.pickupType : $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType[message.pickupType] : message.pickupType;
+                    if (message.dropOffType != null && message.hasOwnProperty("dropOffType"))
+                        object.dropOffType = options.enums === String ? $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType[message.dropOffType] === undefined ? message.dropOffType : $root.transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType[message.dropOffType] : message.dropOffType;
                     return object;
                 };
 
@@ -2104,6 +2453,24 @@ $root.transit_realtime = (function() {
                     return typeUrlPrefix + "/transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties";
                 };
 
+                /**
+                 * DropOffPickupType enum.
+                 * @name transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.DropOffPickupType
+                 * @enum {number}
+                 * @property {number} REGULAR=0 REGULAR value
+                 * @property {number} NONE=1 NONE value
+                 * @property {number} PHONE_AGENCY=2 PHONE_AGENCY value
+                 * @property {number} COORDINATE_WITH_DRIVER=3 COORDINATE_WITH_DRIVER value
+                 */
+                StopTimeProperties.DropOffPickupType = (function() {
+                    var valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "REGULAR"] = 0;
+                    values[valuesById[1] = "NONE"] = 1;
+                    values[valuesById[2] = "PHONE_AGENCY"] = 2;
+                    values[valuesById[3] = "COORDINATE_WITH_DRIVER"] = 3;
+                    return values;
+                })();
+
                 return StopTimeProperties;
             })();
 
@@ -2119,6 +2486,9 @@ $root.transit_realtime = (function() {
              * @property {string|null} [tripId] TripProperties tripId
              * @property {string|null} [startDate] TripProperties startDate
              * @property {string|null} [startTime] TripProperties startTime
+             * @property {string|null} [shapeId] TripProperties shapeId
+             * @property {string|null} [tripHeadsign] TripProperties tripHeadsign
+             * @property {string|null} [tripShortName] TripProperties tripShortName
              */
 
             /**
@@ -2161,6 +2531,30 @@ $root.transit_realtime = (function() {
             TripProperties.prototype.startTime = "";
 
             /**
+             * TripProperties shapeId.
+             * @member {string} shapeId
+             * @memberof transit_realtime.TripUpdate.TripProperties
+             * @instance
+             */
+            TripProperties.prototype.shapeId = "";
+
+            /**
+             * TripProperties tripHeadsign.
+             * @member {string} tripHeadsign
+             * @memberof transit_realtime.TripUpdate.TripProperties
+             * @instance
+             */
+            TripProperties.prototype.tripHeadsign = "";
+
+            /**
+             * TripProperties tripShortName.
+             * @member {string} tripShortName
+             * @memberof transit_realtime.TripUpdate.TripProperties
+             * @instance
+             */
+            TripProperties.prototype.tripShortName = "";
+
+            /**
              * Creates a new TripProperties instance using the specified properties.
              * @function create
              * @memberof transit_realtime.TripUpdate.TripProperties
@@ -2190,6 +2584,12 @@ $root.transit_realtime = (function() {
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.startDate);
                 if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.startTime);
+                if (message.shapeId != null && Object.hasOwnProperty.call(message, "shapeId"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.shapeId);
+                if (message.tripHeadsign != null && Object.hasOwnProperty.call(message, "tripHeadsign"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.tripHeadsign);
+                if (message.tripShortName != null && Object.hasOwnProperty.call(message, "tripShortName"))
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.tripShortName);
                 return writer;
             };
 
@@ -2236,6 +2636,18 @@ $root.transit_realtime = (function() {
                             message.startTime = reader.string();
                             break;
                         }
+                    case 4: {
+                            message.shapeId = reader.string();
+                            break;
+                        }
+                    case 5: {
+                            message.tripHeadsign = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.tripShortName = reader.string();
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -2280,6 +2692,15 @@ $root.transit_realtime = (function() {
                 if (message.startTime != null && message.hasOwnProperty("startTime"))
                     if (!$util.isString(message.startTime))
                         return "startTime: string expected";
+                if (message.shapeId != null && message.hasOwnProperty("shapeId"))
+                    if (!$util.isString(message.shapeId))
+                        return "shapeId: string expected";
+                if (message.tripHeadsign != null && message.hasOwnProperty("tripHeadsign"))
+                    if (!$util.isString(message.tripHeadsign))
+                        return "tripHeadsign: string expected";
+                if (message.tripShortName != null && message.hasOwnProperty("tripShortName"))
+                    if (!$util.isString(message.tripShortName))
+                        return "tripShortName: string expected";
                 return null;
             };
 
@@ -2301,6 +2722,12 @@ $root.transit_realtime = (function() {
                     message.startDate = String(object.startDate);
                 if (object.startTime != null)
                     message.startTime = String(object.startTime);
+                if (object.shapeId != null)
+                    message.shapeId = String(object.shapeId);
+                if (object.tripHeadsign != null)
+                    message.tripHeadsign = String(object.tripHeadsign);
+                if (object.tripShortName != null)
+                    message.tripShortName = String(object.tripShortName);
                 return message;
             };
 
@@ -2321,6 +2748,9 @@ $root.transit_realtime = (function() {
                     object.tripId = "";
                     object.startDate = "";
                     object.startTime = "";
+                    object.shapeId = "";
+                    object.tripHeadsign = "";
+                    object.tripShortName = "";
                 }
                 if (message.tripId != null && message.hasOwnProperty("tripId"))
                     object.tripId = message.tripId;
@@ -2328,6 +2758,12 @@ $root.transit_realtime = (function() {
                     object.startDate = message.startDate;
                 if (message.startTime != null && message.hasOwnProperty("startTime"))
                     object.startTime = message.startTime;
+                if (message.shapeId != null && message.hasOwnProperty("shapeId"))
+                    object.shapeId = message.shapeId;
+                if (message.tripHeadsign != null && message.hasOwnProperty("tripHeadsign"))
+                    object.tripHeadsign = message.tripHeadsign;
+                if (message.tripShortName != null && message.hasOwnProperty("tripShortName"))
+                    object.tripShortName = message.tripShortName;
                 return object;
             };
 
@@ -3390,6 +3826,10 @@ $root.transit_realtime = (function() {
          * @property {transit_realtime.ITranslatedString|null} [ttsHeaderText] Alert ttsHeaderText
          * @property {transit_realtime.ITranslatedString|null} [ttsDescriptionText] Alert ttsDescriptionText
          * @property {transit_realtime.Alert.SeverityLevel|null} [severityLevel] Alert severityLevel
+         * @property {transit_realtime.ITranslatedImage|null} [image] Alert image
+         * @property {transit_realtime.ITranslatedString|null} [imageAlternativeText] Alert imageAlternativeText
+         * @property {transit_realtime.ITranslatedString|null} [causeDetail] Alert causeDetail
+         * @property {transit_realtime.ITranslatedString|null} [effectDetail] Alert effectDetail
          */
 
         /**
@@ -3490,6 +3930,38 @@ $root.transit_realtime = (function() {
         Alert.prototype.severityLevel = 1;
 
         /**
+         * Alert image.
+         * @member {transit_realtime.ITranslatedImage|null|undefined} image
+         * @memberof transit_realtime.Alert
+         * @instance
+         */
+        Alert.prototype.image = null;
+
+        /**
+         * Alert imageAlternativeText.
+         * @member {transit_realtime.ITranslatedString|null|undefined} imageAlternativeText
+         * @memberof transit_realtime.Alert
+         * @instance
+         */
+        Alert.prototype.imageAlternativeText = null;
+
+        /**
+         * Alert causeDetail.
+         * @member {transit_realtime.ITranslatedString|null|undefined} causeDetail
+         * @memberof transit_realtime.Alert
+         * @instance
+         */
+        Alert.prototype.causeDetail = null;
+
+        /**
+         * Alert effectDetail.
+         * @member {transit_realtime.ITranslatedString|null|undefined} effectDetail
+         * @memberof transit_realtime.Alert
+         * @instance
+         */
+        Alert.prototype.effectDetail = null;
+
+        /**
          * Creates a new Alert instance using the specified properties.
          * @function create
          * @memberof transit_realtime.Alert
@@ -3535,6 +4007,14 @@ $root.transit_realtime = (function() {
                 $root.transit_realtime.TranslatedString.encode(message.ttsDescriptionText, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
             if (message.severityLevel != null && Object.hasOwnProperty.call(message, "severityLevel"))
                 writer.uint32(/* id 14, wireType 0 =*/112).int32(message.severityLevel);
+            if (message.image != null && Object.hasOwnProperty.call(message, "image"))
+                $root.transit_realtime.TranslatedImage.encode(message.image, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+            if (message.imageAlternativeText != null && Object.hasOwnProperty.call(message, "imageAlternativeText"))
+                $root.transit_realtime.TranslatedString.encode(message.imageAlternativeText, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+            if (message.causeDetail != null && Object.hasOwnProperty.call(message, "causeDetail"))
+                $root.transit_realtime.TranslatedString.encode(message.causeDetail, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+            if (message.effectDetail != null && Object.hasOwnProperty.call(message, "effectDetail"))
+                $root.transit_realtime.TranslatedString.encode(message.effectDetail, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
             return writer;
         };
 
@@ -3611,6 +4091,22 @@ $root.transit_realtime = (function() {
                     }
                 case 14: {
                         message.severityLevel = reader.int32();
+                        break;
+                    }
+                case 15: {
+                        message.image = $root.transit_realtime.TranslatedImage.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 16: {
+                        message.imageAlternativeText = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 17: {
+                        message.causeDetail = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 18: {
+                        message.effectDetail = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -3736,6 +4232,26 @@ $root.transit_realtime = (function() {
                 case 4:
                     break;
                 }
+            if (message.image != null && message.hasOwnProperty("image")) {
+                var error = $root.transit_realtime.TranslatedImage.verify(message.image);
+                if (error)
+                    return "image." + error;
+            }
+            if (message.imageAlternativeText != null && message.hasOwnProperty("imageAlternativeText")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.imageAlternativeText);
+                if (error)
+                    return "imageAlternativeText." + error;
+            }
+            if (message.causeDetail != null && message.hasOwnProperty("causeDetail")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.causeDetail);
+                if (error)
+                    return "causeDetail." + error;
+            }
+            if (message.effectDetail != null && message.hasOwnProperty("effectDetail")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.effectDetail);
+                if (error)
+                    return "effectDetail." + error;
+            }
             return null;
         };
 
@@ -3928,6 +4444,26 @@ $root.transit_realtime = (function() {
                 message.severityLevel = 4;
                 break;
             }
+            if (object.image != null) {
+                if (typeof object.image !== "object")
+                    throw TypeError(".transit_realtime.Alert.image: object expected");
+                message.image = $root.transit_realtime.TranslatedImage.fromObject(object.image);
+            }
+            if (object.imageAlternativeText != null) {
+                if (typeof object.imageAlternativeText !== "object")
+                    throw TypeError(".transit_realtime.Alert.imageAlternativeText: object expected");
+                message.imageAlternativeText = $root.transit_realtime.TranslatedString.fromObject(object.imageAlternativeText);
+            }
+            if (object.causeDetail != null) {
+                if (typeof object.causeDetail !== "object")
+                    throw TypeError(".transit_realtime.Alert.causeDetail: object expected");
+                message.causeDetail = $root.transit_realtime.TranslatedString.fromObject(object.causeDetail);
+            }
+            if (object.effectDetail != null) {
+                if (typeof object.effectDetail !== "object")
+                    throw TypeError(".transit_realtime.Alert.effectDetail: object expected");
+                message.effectDetail = $root.transit_realtime.TranslatedString.fromObject(object.effectDetail);
+            }
             return message;
         };
 
@@ -3957,6 +4493,10 @@ $root.transit_realtime = (function() {
                 object.ttsHeaderText = null;
                 object.ttsDescriptionText = null;
                 object.severityLevel = options.enums === String ? "UNKNOWN_SEVERITY" : 1;
+                object.image = null;
+                object.imageAlternativeText = null;
+                object.causeDetail = null;
+                object.effectDetail = null;
             }
             if (message.activePeriod && message.activePeriod.length) {
                 object.activePeriod = [];
@@ -3984,6 +4524,14 @@ $root.transit_realtime = (function() {
                 object.ttsDescriptionText = $root.transit_realtime.TranslatedString.toObject(message.ttsDescriptionText, options);
             if (message.severityLevel != null && message.hasOwnProperty("severityLevel"))
                 object.severityLevel = options.enums === String ? $root.transit_realtime.Alert.SeverityLevel[message.severityLevel] === undefined ? message.severityLevel : $root.transit_realtime.Alert.SeverityLevel[message.severityLevel] : message.severityLevel;
+            if (message.image != null && message.hasOwnProperty("image"))
+                object.image = $root.transit_realtime.TranslatedImage.toObject(message.image, options);
+            if (message.imageAlternativeText != null && message.hasOwnProperty("imageAlternativeText"))
+                object.imageAlternativeText = $root.transit_realtime.TranslatedString.toObject(message.imageAlternativeText, options);
+            if (message.causeDetail != null && message.hasOwnProperty("causeDetail"))
+                object.causeDetail = $root.transit_realtime.TranslatedString.toObject(message.causeDetail, options);
+            if (message.effectDetail != null && message.hasOwnProperty("effectDetail"))
+                object.effectDetail = $root.transit_realtime.TranslatedString.toObject(message.effectDetail, options);
             return object;
         };
 
@@ -4663,6 +5211,7 @@ $root.transit_realtime = (function() {
          * @property {string|null} [startTime] TripDescriptor startTime
          * @property {string|null} [startDate] TripDescriptor startDate
          * @property {transit_realtime.TripDescriptor.ScheduleRelationship|null} [scheduleRelationship] TripDescriptor scheduleRelationship
+         * @property {transit_realtime.TripDescriptor.IModifiedTripSelector|null} [modifiedTrip] TripDescriptor modifiedTrip
          */
 
         /**
@@ -4729,6 +5278,14 @@ $root.transit_realtime = (function() {
         TripDescriptor.prototype.scheduleRelationship = 0;
 
         /**
+         * TripDescriptor modifiedTrip.
+         * @member {transit_realtime.TripDescriptor.IModifiedTripSelector|null|undefined} modifiedTrip
+         * @memberof transit_realtime.TripDescriptor
+         * @instance
+         */
+        TripDescriptor.prototype.modifiedTrip = null;
+
+        /**
          * Creates a new TripDescriptor instance using the specified properties.
          * @function create
          * @memberof transit_realtime.TripDescriptor
@@ -4764,6 +5321,8 @@ $root.transit_realtime = (function() {
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.routeId);
             if (message.directionId != null && Object.hasOwnProperty.call(message, "directionId"))
                 writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.directionId);
+            if (message.modifiedTrip != null && Object.hasOwnProperty.call(message, "modifiedTrip"))
+                $root.transit_realtime.TripDescriptor.ModifiedTripSelector.encode(message.modifiedTrip, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             return writer;
         };
 
@@ -4820,6 +5379,10 @@ $root.transit_realtime = (function() {
                     }
                 case 4: {
                         message.scheduleRelationship = reader.int32();
+                        break;
+                    }
+                case 7: {
+                        message.modifiedTrip = $root.transit_realtime.TripDescriptor.ModifiedTripSelector.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -4882,8 +5445,15 @@ $root.transit_realtime = (function() {
                 case 3:
                 case 5:
                 case 6:
+                case 7:
+                case 8:
                     break;
                 }
+            if (message.modifiedTrip != null && message.hasOwnProperty("modifiedTrip")) {
+                var error = $root.transit_realtime.TripDescriptor.ModifiedTripSelector.verify(message.modifiedTrip);
+                if (error)
+                    return "modifiedTrip." + error;
+            }
             return null;
         };
 
@@ -4940,6 +5510,19 @@ $root.transit_realtime = (function() {
             case 6:
                 message.scheduleRelationship = 6;
                 break;
+            case "DELETED":
+            case 7:
+                message.scheduleRelationship = 7;
+                break;
+            case "NEW":
+            case 8:
+                message.scheduleRelationship = 8;
+                break;
+            }
+            if (object.modifiedTrip != null) {
+                if (typeof object.modifiedTrip !== "object")
+                    throw TypeError(".transit_realtime.TripDescriptor.modifiedTrip: object expected");
+                message.modifiedTrip = $root.transit_realtime.TripDescriptor.ModifiedTripSelector.fromObject(object.modifiedTrip);
             }
             return message;
         };
@@ -4964,6 +5547,7 @@ $root.transit_realtime = (function() {
                 object.scheduleRelationship = options.enums === String ? "SCHEDULED" : 0;
                 object.routeId = "";
                 object.directionId = 0;
+                object.modifiedTrip = null;
             }
             if (message.tripId != null && message.hasOwnProperty("tripId"))
                 object.tripId = message.tripId;
@@ -4977,6 +5561,8 @@ $root.transit_realtime = (function() {
                 object.routeId = message.routeId;
             if (message.directionId != null && message.hasOwnProperty("directionId"))
                 object.directionId = message.directionId;
+            if (message.modifiedTrip != null && message.hasOwnProperty("modifiedTrip"))
+                object.modifiedTrip = $root.transit_realtime.TripDescriptor.ModifiedTripSelector.toObject(message.modifiedTrip, options);
             return object;
         };
 
@@ -5016,6 +5602,8 @@ $root.transit_realtime = (function() {
          * @property {number} CANCELED=3 CANCELED value
          * @property {number} REPLACEMENT=5 REPLACEMENT value
          * @property {number} DUPLICATED=6 DUPLICATED value
+         * @property {number} DELETED=7 DELETED value
+         * @property {number} NEW=8 NEW value
          */
         TripDescriptor.ScheduleRelationship = (function() {
             var valuesById = {}, values = Object.create(valuesById);
@@ -5025,7 +5613,282 @@ $root.transit_realtime = (function() {
             values[valuesById[3] = "CANCELED"] = 3;
             values[valuesById[5] = "REPLACEMENT"] = 5;
             values[valuesById[6] = "DUPLICATED"] = 6;
+            values[valuesById[7] = "DELETED"] = 7;
+            values[valuesById[8] = "NEW"] = 8;
             return values;
+        })();
+
+        TripDescriptor.ModifiedTripSelector = (function() {
+
+            /**
+             * Properties of a ModifiedTripSelector.
+             * @memberof transit_realtime.TripDescriptor
+             * @interface IModifiedTripSelector
+             * @property {string|null} [modificationsId] ModifiedTripSelector modificationsId
+             * @property {string|null} [affectedTripId] ModifiedTripSelector affectedTripId
+             * @property {string|null} [startTime] ModifiedTripSelector startTime
+             * @property {string|null} [startDate] ModifiedTripSelector startDate
+             */
+
+            /**
+             * Constructs a new ModifiedTripSelector.
+             * @memberof transit_realtime.TripDescriptor
+             * @classdesc Represents a ModifiedTripSelector.
+             * @implements IModifiedTripSelector
+             * @constructor
+             * @param {transit_realtime.TripDescriptor.IModifiedTripSelector=} [properties] Properties to set
+             */
+            function ModifiedTripSelector(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * ModifiedTripSelector modificationsId.
+             * @member {string} modificationsId
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @instance
+             */
+            ModifiedTripSelector.prototype.modificationsId = "";
+
+            /**
+             * ModifiedTripSelector affectedTripId.
+             * @member {string} affectedTripId
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @instance
+             */
+            ModifiedTripSelector.prototype.affectedTripId = "";
+
+            /**
+             * ModifiedTripSelector startTime.
+             * @member {string} startTime
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @instance
+             */
+            ModifiedTripSelector.prototype.startTime = "";
+
+            /**
+             * ModifiedTripSelector startDate.
+             * @member {string} startDate
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @instance
+             */
+            ModifiedTripSelector.prototype.startDate = "";
+
+            /**
+             * Creates a new ModifiedTripSelector instance using the specified properties.
+             * @function create
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {transit_realtime.TripDescriptor.IModifiedTripSelector=} [properties] Properties to set
+             * @returns {transit_realtime.TripDescriptor.ModifiedTripSelector} ModifiedTripSelector instance
+             */
+            ModifiedTripSelector.create = function create(properties) {
+                return new ModifiedTripSelector(properties);
+            };
+
+            /**
+             * Encodes the specified ModifiedTripSelector message. Does not implicitly {@link transit_realtime.TripDescriptor.ModifiedTripSelector.verify|verify} messages.
+             * @function encode
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {transit_realtime.TripDescriptor.IModifiedTripSelector} message ModifiedTripSelector message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            ModifiedTripSelector.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.modificationsId != null && Object.hasOwnProperty.call(message, "modificationsId"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.modificationsId);
+                if (message.affectedTripId != null && Object.hasOwnProperty.call(message, "affectedTripId"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.affectedTripId);
+                if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.startTime);
+                if (message.startDate != null && Object.hasOwnProperty.call(message, "startDate"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.startDate);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified ModifiedTripSelector message, length delimited. Does not implicitly {@link transit_realtime.TripDescriptor.ModifiedTripSelector.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {transit_realtime.TripDescriptor.IModifiedTripSelector} message ModifiedTripSelector message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            ModifiedTripSelector.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a ModifiedTripSelector message from the specified reader or buffer.
+             * @function decode
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {transit_realtime.TripDescriptor.ModifiedTripSelector} ModifiedTripSelector
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            ModifiedTripSelector.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.TripDescriptor.ModifiedTripSelector();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.modificationsId = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.affectedTripId = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.startTime = reader.string();
+                            break;
+                        }
+                    case 4: {
+                            message.startDate = reader.string();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a ModifiedTripSelector message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {transit_realtime.TripDescriptor.ModifiedTripSelector} ModifiedTripSelector
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            ModifiedTripSelector.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a ModifiedTripSelector message.
+             * @function verify
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            ModifiedTripSelector.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.modificationsId != null && message.hasOwnProperty("modificationsId"))
+                    if (!$util.isString(message.modificationsId))
+                        return "modificationsId: string expected";
+                if (message.affectedTripId != null && message.hasOwnProperty("affectedTripId"))
+                    if (!$util.isString(message.affectedTripId))
+                        return "affectedTripId: string expected";
+                if (message.startTime != null && message.hasOwnProperty("startTime"))
+                    if (!$util.isString(message.startTime))
+                        return "startTime: string expected";
+                if (message.startDate != null && message.hasOwnProperty("startDate"))
+                    if (!$util.isString(message.startDate))
+                        return "startDate: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a ModifiedTripSelector message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {transit_realtime.TripDescriptor.ModifiedTripSelector} ModifiedTripSelector
+             */
+            ModifiedTripSelector.fromObject = function fromObject(object) {
+                if (object instanceof $root.transit_realtime.TripDescriptor.ModifiedTripSelector)
+                    return object;
+                var message = new $root.transit_realtime.TripDescriptor.ModifiedTripSelector();
+                if (object.modificationsId != null)
+                    message.modificationsId = String(object.modificationsId);
+                if (object.affectedTripId != null)
+                    message.affectedTripId = String(object.affectedTripId);
+                if (object.startTime != null)
+                    message.startTime = String(object.startTime);
+                if (object.startDate != null)
+                    message.startDate = String(object.startDate);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a ModifiedTripSelector message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {transit_realtime.TripDescriptor.ModifiedTripSelector} message ModifiedTripSelector
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            ModifiedTripSelector.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.modificationsId = "";
+                    object.affectedTripId = "";
+                    object.startTime = "";
+                    object.startDate = "";
+                }
+                if (message.modificationsId != null && message.hasOwnProperty("modificationsId"))
+                    object.modificationsId = message.modificationsId;
+                if (message.affectedTripId != null && message.hasOwnProperty("affectedTripId"))
+                    object.affectedTripId = message.affectedTripId;
+                if (message.startTime != null && message.hasOwnProperty("startTime"))
+                    object.startTime = message.startTime;
+                if (message.startDate != null && message.hasOwnProperty("startDate"))
+                    object.startDate = message.startDate;
+                return object;
+            };
+
+            /**
+             * Converts this ModifiedTripSelector to JSON.
+             * @function toJSON
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            ModifiedTripSelector.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for ModifiedTripSelector
+             * @function getTypeUrl
+             * @memberof transit_realtime.TripDescriptor.ModifiedTripSelector
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            ModifiedTripSelector.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/transit_realtime.TripDescriptor.ModifiedTripSelector";
+            };
+
+            return ModifiedTripSelector;
         })();
 
         return TripDescriptor;
@@ -5040,6 +5903,7 @@ $root.transit_realtime = (function() {
          * @property {string|null} [id] VehicleDescriptor id
          * @property {string|null} [label] VehicleDescriptor label
          * @property {string|null} [licensePlate] VehicleDescriptor licensePlate
+         * @property {transit_realtime.VehicleDescriptor.WheelchairAccessible|null} [wheelchairAccessible] VehicleDescriptor wheelchairAccessible
          */
 
         /**
@@ -5082,6 +5946,14 @@ $root.transit_realtime = (function() {
         VehicleDescriptor.prototype.licensePlate = "";
 
         /**
+         * VehicleDescriptor wheelchairAccessible.
+         * @member {transit_realtime.VehicleDescriptor.WheelchairAccessible} wheelchairAccessible
+         * @memberof transit_realtime.VehicleDescriptor
+         * @instance
+         */
+        VehicleDescriptor.prototype.wheelchairAccessible = 0;
+
+        /**
          * Creates a new VehicleDescriptor instance using the specified properties.
          * @function create
          * @memberof transit_realtime.VehicleDescriptor
@@ -5111,6 +5983,8 @@ $root.transit_realtime = (function() {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.label);
             if (message.licensePlate != null && Object.hasOwnProperty.call(message, "licensePlate"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.licensePlate);
+            if (message.wheelchairAccessible != null && Object.hasOwnProperty.call(message, "wheelchairAccessible"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.wheelchairAccessible);
             return writer;
         };
 
@@ -5157,6 +6031,10 @@ $root.transit_realtime = (function() {
                         message.licensePlate = reader.string();
                         break;
                     }
+                case 4: {
+                        message.wheelchairAccessible = reader.int32();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -5201,6 +6079,16 @@ $root.transit_realtime = (function() {
             if (message.licensePlate != null && message.hasOwnProperty("licensePlate"))
                 if (!$util.isString(message.licensePlate))
                     return "licensePlate: string expected";
+            if (message.wheelchairAccessible != null && message.hasOwnProperty("wheelchairAccessible"))
+                switch (message.wheelchairAccessible) {
+                default:
+                    return "wheelchairAccessible: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                }
             return null;
         };
 
@@ -5222,6 +6110,30 @@ $root.transit_realtime = (function() {
                 message.label = String(object.label);
             if (object.licensePlate != null)
                 message.licensePlate = String(object.licensePlate);
+            switch (object.wheelchairAccessible) {
+            default:
+                if (typeof object.wheelchairAccessible === "number") {
+                    message.wheelchairAccessible = object.wheelchairAccessible;
+                    break;
+                }
+                break;
+            case "NO_VALUE":
+            case 0:
+                message.wheelchairAccessible = 0;
+                break;
+            case "UNKNOWN":
+            case 1:
+                message.wheelchairAccessible = 1;
+                break;
+            case "WHEELCHAIR_ACCESSIBLE":
+            case 2:
+                message.wheelchairAccessible = 2;
+                break;
+            case "WHEELCHAIR_INACCESSIBLE":
+            case 3:
+                message.wheelchairAccessible = 3;
+                break;
+            }
             return message;
         };
 
@@ -5242,6 +6154,7 @@ $root.transit_realtime = (function() {
                 object.id = "";
                 object.label = "";
                 object.licensePlate = "";
+                object.wheelchairAccessible = options.enums === String ? "NO_VALUE" : 0;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -5249,6 +6162,8 @@ $root.transit_realtime = (function() {
                 object.label = message.label;
             if (message.licensePlate != null && message.hasOwnProperty("licensePlate"))
                 object.licensePlate = message.licensePlate;
+            if (message.wheelchairAccessible != null && message.hasOwnProperty("wheelchairAccessible"))
+                object.wheelchairAccessible = options.enums === String ? $root.transit_realtime.VehicleDescriptor.WheelchairAccessible[message.wheelchairAccessible] === undefined ? message.wheelchairAccessible : $root.transit_realtime.VehicleDescriptor.WheelchairAccessible[message.wheelchairAccessible] : message.wheelchairAccessible;
             return object;
         };
 
@@ -5277,6 +6192,24 @@ $root.transit_realtime = (function() {
             }
             return typeUrlPrefix + "/transit_realtime.VehicleDescriptor";
         };
+
+        /**
+         * WheelchairAccessible enum.
+         * @name transit_realtime.VehicleDescriptor.WheelchairAccessible
+         * @enum {number}
+         * @property {number} NO_VALUE=0 NO_VALUE value
+         * @property {number} UNKNOWN=1 UNKNOWN value
+         * @property {number} WHEELCHAIR_ACCESSIBLE=2 WHEELCHAIR_ACCESSIBLE value
+         * @property {number} WHEELCHAIR_INACCESSIBLE=3 WHEELCHAIR_INACCESSIBLE value
+         */
+        VehicleDescriptor.WheelchairAccessible = (function() {
+            var valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "NO_VALUE"] = 0;
+            values[valuesById[1] = "UNKNOWN"] = 1;
+            values[valuesById[2] = "WHEELCHAIR_ACCESSIBLE"] = 2;
+            values[valuesById[3] = "WHEELCHAIR_INACCESSIBLE"] = 3;
+            return values;
+        })();
 
         return VehicleDescriptor;
     })();
@@ -6054,6 +6987,2689 @@ $root.transit_realtime = (function() {
         })();
 
         return TranslatedString;
+    })();
+
+    transit_realtime.TranslatedImage = (function() {
+
+        /**
+         * Properties of a TranslatedImage.
+         * @memberof transit_realtime
+         * @interface ITranslatedImage
+         * @property {Array.<transit_realtime.TranslatedImage.ILocalizedImage>|null} [localizedImage] TranslatedImage localizedImage
+         */
+
+        /**
+         * Constructs a new TranslatedImage.
+         * @memberof transit_realtime
+         * @classdesc Represents a TranslatedImage.
+         * @implements ITranslatedImage
+         * @constructor
+         * @param {transit_realtime.ITranslatedImage=} [properties] Properties to set
+         */
+        function TranslatedImage(properties) {
+            this.localizedImage = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TranslatedImage localizedImage.
+         * @member {Array.<transit_realtime.TranslatedImage.ILocalizedImage>} localizedImage
+         * @memberof transit_realtime.TranslatedImage
+         * @instance
+         */
+        TranslatedImage.prototype.localizedImage = $util.emptyArray;
+
+        /**
+         * Creates a new TranslatedImage instance using the specified properties.
+         * @function create
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {transit_realtime.ITranslatedImage=} [properties] Properties to set
+         * @returns {transit_realtime.TranslatedImage} TranslatedImage instance
+         */
+        TranslatedImage.create = function create(properties) {
+            return new TranslatedImage(properties);
+        };
+
+        /**
+         * Encodes the specified TranslatedImage message. Does not implicitly {@link transit_realtime.TranslatedImage.verify|verify} messages.
+         * @function encode
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {transit_realtime.ITranslatedImage} message TranslatedImage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TranslatedImage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.localizedImage != null && message.localizedImage.length)
+                for (var i = 0; i < message.localizedImage.length; ++i)
+                    $root.transit_realtime.TranslatedImage.LocalizedImage.encode(message.localizedImage[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TranslatedImage message, length delimited. Does not implicitly {@link transit_realtime.TranslatedImage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {transit_realtime.ITranslatedImage} message TranslatedImage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TranslatedImage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TranslatedImage message from the specified reader or buffer.
+         * @function decode
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {transit_realtime.TranslatedImage} TranslatedImage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TranslatedImage.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.TranslatedImage();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        if (!(message.localizedImage && message.localizedImage.length))
+                            message.localizedImage = [];
+                        message.localizedImage.push($root.transit_realtime.TranslatedImage.LocalizedImage.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a TranslatedImage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {transit_realtime.TranslatedImage} TranslatedImage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TranslatedImage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TranslatedImage message.
+         * @function verify
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TranslatedImage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.localizedImage != null && message.hasOwnProperty("localizedImage")) {
+                if (!Array.isArray(message.localizedImage))
+                    return "localizedImage: array expected";
+                for (var i = 0; i < message.localizedImage.length; ++i) {
+                    var error = $root.transit_realtime.TranslatedImage.LocalizedImage.verify(message.localizedImage[i]);
+                    if (error)
+                        return "localizedImage." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a TranslatedImage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {transit_realtime.TranslatedImage} TranslatedImage
+         */
+        TranslatedImage.fromObject = function fromObject(object) {
+            if (object instanceof $root.transit_realtime.TranslatedImage)
+                return object;
+            var message = new $root.transit_realtime.TranslatedImage();
+            if (object.localizedImage) {
+                if (!Array.isArray(object.localizedImage))
+                    throw TypeError(".transit_realtime.TranslatedImage.localizedImage: array expected");
+                message.localizedImage = [];
+                for (var i = 0; i < object.localizedImage.length; ++i) {
+                    if (typeof object.localizedImage[i] !== "object")
+                        throw TypeError(".transit_realtime.TranslatedImage.localizedImage: object expected");
+                    message.localizedImage[i] = $root.transit_realtime.TranslatedImage.LocalizedImage.fromObject(object.localizedImage[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TranslatedImage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {transit_realtime.TranslatedImage} message TranslatedImage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TranslatedImage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.localizedImage = [];
+            if (message.localizedImage && message.localizedImage.length) {
+                object.localizedImage = [];
+                for (var j = 0; j < message.localizedImage.length; ++j)
+                    object.localizedImage[j] = $root.transit_realtime.TranslatedImage.LocalizedImage.toObject(message.localizedImage[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this TranslatedImage to JSON.
+         * @function toJSON
+         * @memberof transit_realtime.TranslatedImage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TranslatedImage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for TranslatedImage
+         * @function getTypeUrl
+         * @memberof transit_realtime.TranslatedImage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        TranslatedImage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/transit_realtime.TranslatedImage";
+        };
+
+        TranslatedImage.LocalizedImage = (function() {
+
+            /**
+             * Properties of a LocalizedImage.
+             * @memberof transit_realtime.TranslatedImage
+             * @interface ILocalizedImage
+             * @property {string} url LocalizedImage url
+             * @property {string} mediaType LocalizedImage mediaType
+             * @property {string|null} [language] LocalizedImage language
+             */
+
+            /**
+             * Constructs a new LocalizedImage.
+             * @memberof transit_realtime.TranslatedImage
+             * @classdesc Represents a LocalizedImage.
+             * @implements ILocalizedImage
+             * @constructor
+             * @param {transit_realtime.TranslatedImage.ILocalizedImage=} [properties] Properties to set
+             */
+            function LocalizedImage(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * LocalizedImage url.
+             * @member {string} url
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @instance
+             */
+            LocalizedImage.prototype.url = "";
+
+            /**
+             * LocalizedImage mediaType.
+             * @member {string} mediaType
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @instance
+             */
+            LocalizedImage.prototype.mediaType = "";
+
+            /**
+             * LocalizedImage language.
+             * @member {string} language
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @instance
+             */
+            LocalizedImage.prototype.language = "";
+
+            /**
+             * Creates a new LocalizedImage instance using the specified properties.
+             * @function create
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {transit_realtime.TranslatedImage.ILocalizedImage=} [properties] Properties to set
+             * @returns {transit_realtime.TranslatedImage.LocalizedImage} LocalizedImage instance
+             */
+            LocalizedImage.create = function create(properties) {
+                return new LocalizedImage(properties);
+            };
+
+            /**
+             * Encodes the specified LocalizedImage message. Does not implicitly {@link transit_realtime.TranslatedImage.LocalizedImage.verify|verify} messages.
+             * @function encode
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {transit_realtime.TranslatedImage.ILocalizedImage} message LocalizedImage message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            LocalizedImage.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.url);
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.mediaType);
+                if (message.language != null && Object.hasOwnProperty.call(message, "language"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.language);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified LocalizedImage message, length delimited. Does not implicitly {@link transit_realtime.TranslatedImage.LocalizedImage.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {transit_realtime.TranslatedImage.ILocalizedImage} message LocalizedImage message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            LocalizedImage.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a LocalizedImage message from the specified reader or buffer.
+             * @function decode
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {transit_realtime.TranslatedImage.LocalizedImage} LocalizedImage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            LocalizedImage.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.TranslatedImage.LocalizedImage();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.url = reader.string();
+                            break;
+                        }
+                    case 2: {
+                            message.mediaType = reader.string();
+                            break;
+                        }
+                    case 3: {
+                            message.language = reader.string();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                if (!message.hasOwnProperty("url"))
+                    throw $util.ProtocolError("missing required 'url'", { instance: message });
+                if (!message.hasOwnProperty("mediaType"))
+                    throw $util.ProtocolError("missing required 'mediaType'", { instance: message });
+                return message;
+            };
+
+            /**
+             * Decodes a LocalizedImage message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {transit_realtime.TranslatedImage.LocalizedImage} LocalizedImage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            LocalizedImage.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a LocalizedImage message.
+             * @function verify
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            LocalizedImage.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (!$util.isString(message.url))
+                    return "url: string expected";
+                if (!$util.isString(message.mediaType))
+                    return "mediaType: string expected";
+                if (message.language != null && message.hasOwnProperty("language"))
+                    if (!$util.isString(message.language))
+                        return "language: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a LocalizedImage message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {transit_realtime.TranslatedImage.LocalizedImage} LocalizedImage
+             */
+            LocalizedImage.fromObject = function fromObject(object) {
+                if (object instanceof $root.transit_realtime.TranslatedImage.LocalizedImage)
+                    return object;
+                var message = new $root.transit_realtime.TranslatedImage.LocalizedImage();
+                if (object.url != null)
+                    message.url = String(object.url);
+                if (object.mediaType != null)
+                    message.mediaType = String(object.mediaType);
+                if (object.language != null)
+                    message.language = String(object.language);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a LocalizedImage message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {transit_realtime.TranslatedImage.LocalizedImage} message LocalizedImage
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            LocalizedImage.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.url = "";
+                    object.mediaType = "";
+                    object.language = "";
+                }
+                if (message.url != null && message.hasOwnProperty("url"))
+                    object.url = message.url;
+                if (message.mediaType != null && message.hasOwnProperty("mediaType"))
+                    object.mediaType = message.mediaType;
+                if (message.language != null && message.hasOwnProperty("language"))
+                    object.language = message.language;
+                return object;
+            };
+
+            /**
+             * Converts this LocalizedImage to JSON.
+             * @function toJSON
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            LocalizedImage.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for LocalizedImage
+             * @function getTypeUrl
+             * @memberof transit_realtime.TranslatedImage.LocalizedImage
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            LocalizedImage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/transit_realtime.TranslatedImage.LocalizedImage";
+            };
+
+            return LocalizedImage;
+        })();
+
+        return TranslatedImage;
+    })();
+
+    transit_realtime.Shape = (function() {
+
+        /**
+         * Properties of a Shape.
+         * @memberof transit_realtime
+         * @interface IShape
+         * @property {string|null} [shapeId] Shape shapeId
+         * @property {string|null} [encodedPolyline] Shape encodedPolyline
+         */
+
+        /**
+         * Constructs a new Shape.
+         * @memberof transit_realtime
+         * @classdesc Represents a Shape.
+         * @implements IShape
+         * @constructor
+         * @param {transit_realtime.IShape=} [properties] Properties to set
+         */
+        function Shape(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Shape shapeId.
+         * @member {string} shapeId
+         * @memberof transit_realtime.Shape
+         * @instance
+         */
+        Shape.prototype.shapeId = "";
+
+        /**
+         * Shape encodedPolyline.
+         * @member {string} encodedPolyline
+         * @memberof transit_realtime.Shape
+         * @instance
+         */
+        Shape.prototype.encodedPolyline = "";
+
+        /**
+         * Creates a new Shape instance using the specified properties.
+         * @function create
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {transit_realtime.IShape=} [properties] Properties to set
+         * @returns {transit_realtime.Shape} Shape instance
+         */
+        Shape.create = function create(properties) {
+            return new Shape(properties);
+        };
+
+        /**
+         * Encodes the specified Shape message. Does not implicitly {@link transit_realtime.Shape.verify|verify} messages.
+         * @function encode
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {transit_realtime.IShape} message Shape message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Shape.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.shapeId != null && Object.hasOwnProperty.call(message, "shapeId"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.shapeId);
+            if (message.encodedPolyline != null && Object.hasOwnProperty.call(message, "encodedPolyline"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.encodedPolyline);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Shape message, length delimited. Does not implicitly {@link transit_realtime.Shape.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {transit_realtime.IShape} message Shape message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Shape.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Shape message from the specified reader or buffer.
+         * @function decode
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {transit_realtime.Shape} Shape
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Shape.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.Shape();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.shapeId = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.encodedPolyline = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Shape message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {transit_realtime.Shape} Shape
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Shape.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Shape message.
+         * @function verify
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Shape.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.shapeId != null && message.hasOwnProperty("shapeId"))
+                if (!$util.isString(message.shapeId))
+                    return "shapeId: string expected";
+            if (message.encodedPolyline != null && message.hasOwnProperty("encodedPolyline"))
+                if (!$util.isString(message.encodedPolyline))
+                    return "encodedPolyline: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a Shape message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {transit_realtime.Shape} Shape
+         */
+        Shape.fromObject = function fromObject(object) {
+            if (object instanceof $root.transit_realtime.Shape)
+                return object;
+            var message = new $root.transit_realtime.Shape();
+            if (object.shapeId != null)
+                message.shapeId = String(object.shapeId);
+            if (object.encodedPolyline != null)
+                message.encodedPolyline = String(object.encodedPolyline);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Shape message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {transit_realtime.Shape} message Shape
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Shape.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.shapeId = "";
+                object.encodedPolyline = "";
+            }
+            if (message.shapeId != null && message.hasOwnProperty("shapeId"))
+                object.shapeId = message.shapeId;
+            if (message.encodedPolyline != null && message.hasOwnProperty("encodedPolyline"))
+                object.encodedPolyline = message.encodedPolyline;
+            return object;
+        };
+
+        /**
+         * Converts this Shape to JSON.
+         * @function toJSON
+         * @memberof transit_realtime.Shape
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Shape.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Shape
+         * @function getTypeUrl
+         * @memberof transit_realtime.Shape
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Shape.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/transit_realtime.Shape";
+        };
+
+        return Shape;
+    })();
+
+    transit_realtime.Stop = (function() {
+
+        /**
+         * Properties of a Stop.
+         * @memberof transit_realtime
+         * @interface IStop
+         * @property {string|null} [stopId] Stop stopId
+         * @property {transit_realtime.ITranslatedString|null} [stopCode] Stop stopCode
+         * @property {transit_realtime.ITranslatedString|null} [stopName] Stop stopName
+         * @property {transit_realtime.ITranslatedString|null} [ttsStopName] Stop ttsStopName
+         * @property {transit_realtime.ITranslatedString|null} [stopDesc] Stop stopDesc
+         * @property {number|null} [stopLat] Stop stopLat
+         * @property {number|null} [stopLon] Stop stopLon
+         * @property {string|null} [zoneId] Stop zoneId
+         * @property {transit_realtime.ITranslatedString|null} [stopUrl] Stop stopUrl
+         * @property {string|null} [parentStation] Stop parentStation
+         * @property {string|null} [stopTimezone] Stop stopTimezone
+         * @property {transit_realtime.Stop.WheelchairBoarding|null} [wheelchairBoarding] Stop wheelchairBoarding
+         * @property {string|null} [levelId] Stop levelId
+         * @property {transit_realtime.ITranslatedString|null} [platformCode] Stop platformCode
+         */
+
+        /**
+         * Constructs a new Stop.
+         * @memberof transit_realtime
+         * @classdesc Represents a Stop.
+         * @implements IStop
+         * @constructor
+         * @param {transit_realtime.IStop=} [properties] Properties to set
+         */
+        function Stop(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Stop stopId.
+         * @member {string} stopId
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopId = "";
+
+        /**
+         * Stop stopCode.
+         * @member {transit_realtime.ITranslatedString|null|undefined} stopCode
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopCode = null;
+
+        /**
+         * Stop stopName.
+         * @member {transit_realtime.ITranslatedString|null|undefined} stopName
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopName = null;
+
+        /**
+         * Stop ttsStopName.
+         * @member {transit_realtime.ITranslatedString|null|undefined} ttsStopName
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.ttsStopName = null;
+
+        /**
+         * Stop stopDesc.
+         * @member {transit_realtime.ITranslatedString|null|undefined} stopDesc
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopDesc = null;
+
+        /**
+         * Stop stopLat.
+         * @member {number} stopLat
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopLat = 0;
+
+        /**
+         * Stop stopLon.
+         * @member {number} stopLon
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopLon = 0;
+
+        /**
+         * Stop zoneId.
+         * @member {string} zoneId
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.zoneId = "";
+
+        /**
+         * Stop stopUrl.
+         * @member {transit_realtime.ITranslatedString|null|undefined} stopUrl
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopUrl = null;
+
+        /**
+         * Stop parentStation.
+         * @member {string} parentStation
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.parentStation = "";
+
+        /**
+         * Stop stopTimezone.
+         * @member {string} stopTimezone
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.stopTimezone = "";
+
+        /**
+         * Stop wheelchairBoarding.
+         * @member {transit_realtime.Stop.WheelchairBoarding} wheelchairBoarding
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.wheelchairBoarding = 0;
+
+        /**
+         * Stop levelId.
+         * @member {string} levelId
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.levelId = "";
+
+        /**
+         * Stop platformCode.
+         * @member {transit_realtime.ITranslatedString|null|undefined} platformCode
+         * @memberof transit_realtime.Stop
+         * @instance
+         */
+        Stop.prototype.platformCode = null;
+
+        /**
+         * Creates a new Stop instance using the specified properties.
+         * @function create
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {transit_realtime.IStop=} [properties] Properties to set
+         * @returns {transit_realtime.Stop} Stop instance
+         */
+        Stop.create = function create(properties) {
+            return new Stop(properties);
+        };
+
+        /**
+         * Encodes the specified Stop message. Does not implicitly {@link transit_realtime.Stop.verify|verify} messages.
+         * @function encode
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {transit_realtime.IStop} message Stop message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Stop.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.stopId != null && Object.hasOwnProperty.call(message, "stopId"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.stopId);
+            if (message.stopCode != null && Object.hasOwnProperty.call(message, "stopCode"))
+                $root.transit_realtime.TranslatedString.encode(message.stopCode, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.stopName != null && Object.hasOwnProperty.call(message, "stopName"))
+                $root.transit_realtime.TranslatedString.encode(message.stopName, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.ttsStopName != null && Object.hasOwnProperty.call(message, "ttsStopName"))
+                $root.transit_realtime.TranslatedString.encode(message.ttsStopName, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.stopDesc != null && Object.hasOwnProperty.call(message, "stopDesc"))
+                $root.transit_realtime.TranslatedString.encode(message.stopDesc, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.stopLat != null && Object.hasOwnProperty.call(message, "stopLat"))
+                writer.uint32(/* id 6, wireType 5 =*/53).float(message.stopLat);
+            if (message.stopLon != null && Object.hasOwnProperty.call(message, "stopLon"))
+                writer.uint32(/* id 7, wireType 5 =*/61).float(message.stopLon);
+            if (message.zoneId != null && Object.hasOwnProperty.call(message, "zoneId"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.zoneId);
+            if (message.stopUrl != null && Object.hasOwnProperty.call(message, "stopUrl"))
+                $root.transit_realtime.TranslatedString.encode(message.stopUrl, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+            if (message.parentStation != null && Object.hasOwnProperty.call(message, "parentStation"))
+                writer.uint32(/* id 11, wireType 2 =*/90).string(message.parentStation);
+            if (message.stopTimezone != null && Object.hasOwnProperty.call(message, "stopTimezone"))
+                writer.uint32(/* id 12, wireType 2 =*/98).string(message.stopTimezone);
+            if (message.wheelchairBoarding != null && Object.hasOwnProperty.call(message, "wheelchairBoarding"))
+                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.wheelchairBoarding);
+            if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                writer.uint32(/* id 14, wireType 2 =*/114).string(message.levelId);
+            if (message.platformCode != null && Object.hasOwnProperty.call(message, "platformCode"))
+                $root.transit_realtime.TranslatedString.encode(message.platformCode, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Stop message, length delimited. Does not implicitly {@link transit_realtime.Stop.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {transit_realtime.IStop} message Stop message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Stop.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Stop message from the specified reader or buffer.
+         * @function decode
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {transit_realtime.Stop} Stop
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Stop.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.Stop();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.stopId = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.stopCode = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 3: {
+                        message.stopName = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        message.ttsStopName = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 5: {
+                        message.stopDesc = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.stopLat = reader.float();
+                        break;
+                    }
+                case 7: {
+                        message.stopLon = reader.float();
+                        break;
+                    }
+                case 8: {
+                        message.zoneId = reader.string();
+                        break;
+                    }
+                case 9: {
+                        message.stopUrl = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 11: {
+                        message.parentStation = reader.string();
+                        break;
+                    }
+                case 12: {
+                        message.stopTimezone = reader.string();
+                        break;
+                    }
+                case 13: {
+                        message.wheelchairBoarding = reader.int32();
+                        break;
+                    }
+                case 14: {
+                        message.levelId = reader.string();
+                        break;
+                    }
+                case 15: {
+                        message.platformCode = $root.transit_realtime.TranslatedString.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Stop message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {transit_realtime.Stop} Stop
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Stop.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Stop message.
+         * @function verify
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Stop.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.stopId != null && message.hasOwnProperty("stopId"))
+                if (!$util.isString(message.stopId))
+                    return "stopId: string expected";
+            if (message.stopCode != null && message.hasOwnProperty("stopCode")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.stopCode);
+                if (error)
+                    return "stopCode." + error;
+            }
+            if (message.stopName != null && message.hasOwnProperty("stopName")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.stopName);
+                if (error)
+                    return "stopName." + error;
+            }
+            if (message.ttsStopName != null && message.hasOwnProperty("ttsStopName")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.ttsStopName);
+                if (error)
+                    return "ttsStopName." + error;
+            }
+            if (message.stopDesc != null && message.hasOwnProperty("stopDesc")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.stopDesc);
+                if (error)
+                    return "stopDesc." + error;
+            }
+            if (message.stopLat != null && message.hasOwnProperty("stopLat"))
+                if (typeof message.stopLat !== "number")
+                    return "stopLat: number expected";
+            if (message.stopLon != null && message.hasOwnProperty("stopLon"))
+                if (typeof message.stopLon !== "number")
+                    return "stopLon: number expected";
+            if (message.zoneId != null && message.hasOwnProperty("zoneId"))
+                if (!$util.isString(message.zoneId))
+                    return "zoneId: string expected";
+            if (message.stopUrl != null && message.hasOwnProperty("stopUrl")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.stopUrl);
+                if (error)
+                    return "stopUrl." + error;
+            }
+            if (message.parentStation != null && message.hasOwnProperty("parentStation"))
+                if (!$util.isString(message.parentStation))
+                    return "parentStation: string expected";
+            if (message.stopTimezone != null && message.hasOwnProperty("stopTimezone"))
+                if (!$util.isString(message.stopTimezone))
+                    return "stopTimezone: string expected";
+            if (message.wheelchairBoarding != null && message.hasOwnProperty("wheelchairBoarding"))
+                switch (message.wheelchairBoarding) {
+                default:
+                    return "wheelchairBoarding: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            if (message.levelId != null && message.hasOwnProperty("levelId"))
+                if (!$util.isString(message.levelId))
+                    return "levelId: string expected";
+            if (message.platformCode != null && message.hasOwnProperty("platformCode")) {
+                var error = $root.transit_realtime.TranslatedString.verify(message.platformCode);
+                if (error)
+                    return "platformCode." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Stop message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {transit_realtime.Stop} Stop
+         */
+        Stop.fromObject = function fromObject(object) {
+            if (object instanceof $root.transit_realtime.Stop)
+                return object;
+            var message = new $root.transit_realtime.Stop();
+            if (object.stopId != null)
+                message.stopId = String(object.stopId);
+            if (object.stopCode != null) {
+                if (typeof object.stopCode !== "object")
+                    throw TypeError(".transit_realtime.Stop.stopCode: object expected");
+                message.stopCode = $root.transit_realtime.TranslatedString.fromObject(object.stopCode);
+            }
+            if (object.stopName != null) {
+                if (typeof object.stopName !== "object")
+                    throw TypeError(".transit_realtime.Stop.stopName: object expected");
+                message.stopName = $root.transit_realtime.TranslatedString.fromObject(object.stopName);
+            }
+            if (object.ttsStopName != null) {
+                if (typeof object.ttsStopName !== "object")
+                    throw TypeError(".transit_realtime.Stop.ttsStopName: object expected");
+                message.ttsStopName = $root.transit_realtime.TranslatedString.fromObject(object.ttsStopName);
+            }
+            if (object.stopDesc != null) {
+                if (typeof object.stopDesc !== "object")
+                    throw TypeError(".transit_realtime.Stop.stopDesc: object expected");
+                message.stopDesc = $root.transit_realtime.TranslatedString.fromObject(object.stopDesc);
+            }
+            if (object.stopLat != null)
+                message.stopLat = Number(object.stopLat);
+            if (object.stopLon != null)
+                message.stopLon = Number(object.stopLon);
+            if (object.zoneId != null)
+                message.zoneId = String(object.zoneId);
+            if (object.stopUrl != null) {
+                if (typeof object.stopUrl !== "object")
+                    throw TypeError(".transit_realtime.Stop.stopUrl: object expected");
+                message.stopUrl = $root.transit_realtime.TranslatedString.fromObject(object.stopUrl);
+            }
+            if (object.parentStation != null)
+                message.parentStation = String(object.parentStation);
+            if (object.stopTimezone != null)
+                message.stopTimezone = String(object.stopTimezone);
+            switch (object.wheelchairBoarding) {
+            default:
+                if (typeof object.wheelchairBoarding === "number") {
+                    message.wheelchairBoarding = object.wheelchairBoarding;
+                    break;
+                }
+                break;
+            case "UNKNOWN":
+            case 0:
+                message.wheelchairBoarding = 0;
+                break;
+            case "AVAILABLE":
+            case 1:
+                message.wheelchairBoarding = 1;
+                break;
+            case "NOT_AVAILABLE":
+            case 2:
+                message.wheelchairBoarding = 2;
+                break;
+            }
+            if (object.levelId != null)
+                message.levelId = String(object.levelId);
+            if (object.platformCode != null) {
+                if (typeof object.platformCode !== "object")
+                    throw TypeError(".transit_realtime.Stop.platformCode: object expected");
+                message.platformCode = $root.transit_realtime.TranslatedString.fromObject(object.platformCode);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Stop message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {transit_realtime.Stop} message Stop
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Stop.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.stopId = "";
+                object.stopCode = null;
+                object.stopName = null;
+                object.ttsStopName = null;
+                object.stopDesc = null;
+                object.stopLat = 0;
+                object.stopLon = 0;
+                object.zoneId = "";
+                object.stopUrl = null;
+                object.parentStation = "";
+                object.stopTimezone = "";
+                object.wheelchairBoarding = options.enums === String ? "UNKNOWN" : 0;
+                object.levelId = "";
+                object.platformCode = null;
+            }
+            if (message.stopId != null && message.hasOwnProperty("stopId"))
+                object.stopId = message.stopId;
+            if (message.stopCode != null && message.hasOwnProperty("stopCode"))
+                object.stopCode = $root.transit_realtime.TranslatedString.toObject(message.stopCode, options);
+            if (message.stopName != null && message.hasOwnProperty("stopName"))
+                object.stopName = $root.transit_realtime.TranslatedString.toObject(message.stopName, options);
+            if (message.ttsStopName != null && message.hasOwnProperty("ttsStopName"))
+                object.ttsStopName = $root.transit_realtime.TranslatedString.toObject(message.ttsStopName, options);
+            if (message.stopDesc != null && message.hasOwnProperty("stopDesc"))
+                object.stopDesc = $root.transit_realtime.TranslatedString.toObject(message.stopDesc, options);
+            if (message.stopLat != null && message.hasOwnProperty("stopLat"))
+                object.stopLat = options.json && !isFinite(message.stopLat) ? String(message.stopLat) : message.stopLat;
+            if (message.stopLon != null && message.hasOwnProperty("stopLon"))
+                object.stopLon = options.json && !isFinite(message.stopLon) ? String(message.stopLon) : message.stopLon;
+            if (message.zoneId != null && message.hasOwnProperty("zoneId"))
+                object.zoneId = message.zoneId;
+            if (message.stopUrl != null && message.hasOwnProperty("stopUrl"))
+                object.stopUrl = $root.transit_realtime.TranslatedString.toObject(message.stopUrl, options);
+            if (message.parentStation != null && message.hasOwnProperty("parentStation"))
+                object.parentStation = message.parentStation;
+            if (message.stopTimezone != null && message.hasOwnProperty("stopTimezone"))
+                object.stopTimezone = message.stopTimezone;
+            if (message.wheelchairBoarding != null && message.hasOwnProperty("wheelchairBoarding"))
+                object.wheelchairBoarding = options.enums === String ? $root.transit_realtime.Stop.WheelchairBoarding[message.wheelchairBoarding] === undefined ? message.wheelchairBoarding : $root.transit_realtime.Stop.WheelchairBoarding[message.wheelchairBoarding] : message.wheelchairBoarding;
+            if (message.levelId != null && message.hasOwnProperty("levelId"))
+                object.levelId = message.levelId;
+            if (message.platformCode != null && message.hasOwnProperty("platformCode"))
+                object.platformCode = $root.transit_realtime.TranslatedString.toObject(message.platformCode, options);
+            return object;
+        };
+
+        /**
+         * Converts this Stop to JSON.
+         * @function toJSON
+         * @memberof transit_realtime.Stop
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Stop.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Stop
+         * @function getTypeUrl
+         * @memberof transit_realtime.Stop
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Stop.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/transit_realtime.Stop";
+        };
+
+        /**
+         * WheelchairBoarding enum.
+         * @name transit_realtime.Stop.WheelchairBoarding
+         * @enum {number}
+         * @property {number} UNKNOWN=0 UNKNOWN value
+         * @property {number} AVAILABLE=1 AVAILABLE value
+         * @property {number} NOT_AVAILABLE=2 NOT_AVAILABLE value
+         */
+        Stop.WheelchairBoarding = (function() {
+            var valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "UNKNOWN"] = 0;
+            values[valuesById[1] = "AVAILABLE"] = 1;
+            values[valuesById[2] = "NOT_AVAILABLE"] = 2;
+            return values;
+        })();
+
+        return Stop;
+    })();
+
+    transit_realtime.TripModifications = (function() {
+
+        /**
+         * Properties of a TripModifications.
+         * @memberof transit_realtime
+         * @interface ITripModifications
+         * @property {Array.<transit_realtime.TripModifications.ISelectedTrips>|null} [selectedTrips] TripModifications selectedTrips
+         * @property {Array.<string>|null} [startTimes] TripModifications startTimes
+         * @property {Array.<string>|null} [serviceDates] TripModifications serviceDates
+         * @property {Array.<transit_realtime.TripModifications.IModification>|null} [modifications] TripModifications modifications
+         */
+
+        /**
+         * Constructs a new TripModifications.
+         * @memberof transit_realtime
+         * @classdesc Represents a TripModifications.
+         * @implements ITripModifications
+         * @constructor
+         * @param {transit_realtime.ITripModifications=} [properties] Properties to set
+         */
+        function TripModifications(properties) {
+            this.selectedTrips = [];
+            this.startTimes = [];
+            this.serviceDates = [];
+            this.modifications = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TripModifications selectedTrips.
+         * @member {Array.<transit_realtime.TripModifications.ISelectedTrips>} selectedTrips
+         * @memberof transit_realtime.TripModifications
+         * @instance
+         */
+        TripModifications.prototype.selectedTrips = $util.emptyArray;
+
+        /**
+         * TripModifications startTimes.
+         * @member {Array.<string>} startTimes
+         * @memberof transit_realtime.TripModifications
+         * @instance
+         */
+        TripModifications.prototype.startTimes = $util.emptyArray;
+
+        /**
+         * TripModifications serviceDates.
+         * @member {Array.<string>} serviceDates
+         * @memberof transit_realtime.TripModifications
+         * @instance
+         */
+        TripModifications.prototype.serviceDates = $util.emptyArray;
+
+        /**
+         * TripModifications modifications.
+         * @member {Array.<transit_realtime.TripModifications.IModification>} modifications
+         * @memberof transit_realtime.TripModifications
+         * @instance
+         */
+        TripModifications.prototype.modifications = $util.emptyArray;
+
+        /**
+         * Creates a new TripModifications instance using the specified properties.
+         * @function create
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {transit_realtime.ITripModifications=} [properties] Properties to set
+         * @returns {transit_realtime.TripModifications} TripModifications instance
+         */
+        TripModifications.create = function create(properties) {
+            return new TripModifications(properties);
+        };
+
+        /**
+         * Encodes the specified TripModifications message. Does not implicitly {@link transit_realtime.TripModifications.verify|verify} messages.
+         * @function encode
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {transit_realtime.ITripModifications} message TripModifications message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TripModifications.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.selectedTrips != null && message.selectedTrips.length)
+                for (var i = 0; i < message.selectedTrips.length; ++i)
+                    $root.transit_realtime.TripModifications.SelectedTrips.encode(message.selectedTrips[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.startTimes != null && message.startTimes.length)
+                for (var i = 0; i < message.startTimes.length; ++i)
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.startTimes[i]);
+            if (message.serviceDates != null && message.serviceDates.length)
+                for (var i = 0; i < message.serviceDates.length; ++i)
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.serviceDates[i]);
+            if (message.modifications != null && message.modifications.length)
+                for (var i = 0; i < message.modifications.length; ++i)
+                    $root.transit_realtime.TripModifications.Modification.encode(message.modifications[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TripModifications message, length delimited. Does not implicitly {@link transit_realtime.TripModifications.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {transit_realtime.ITripModifications} message TripModifications message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TripModifications.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TripModifications message from the specified reader or buffer.
+         * @function decode
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {transit_realtime.TripModifications} TripModifications
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TripModifications.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.TripModifications();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        if (!(message.selectedTrips && message.selectedTrips.length))
+                            message.selectedTrips = [];
+                        message.selectedTrips.push($root.transit_realtime.TripModifications.SelectedTrips.decode(reader, reader.uint32()));
+                        break;
+                    }
+                case 2: {
+                        if (!(message.startTimes && message.startTimes.length))
+                            message.startTimes = [];
+                        message.startTimes.push(reader.string());
+                        break;
+                    }
+                case 3: {
+                        if (!(message.serviceDates && message.serviceDates.length))
+                            message.serviceDates = [];
+                        message.serviceDates.push(reader.string());
+                        break;
+                    }
+                case 4: {
+                        if (!(message.modifications && message.modifications.length))
+                            message.modifications = [];
+                        message.modifications.push($root.transit_realtime.TripModifications.Modification.decode(reader, reader.uint32()));
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a TripModifications message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {transit_realtime.TripModifications} TripModifications
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TripModifications.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TripModifications message.
+         * @function verify
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TripModifications.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.selectedTrips != null && message.hasOwnProperty("selectedTrips")) {
+                if (!Array.isArray(message.selectedTrips))
+                    return "selectedTrips: array expected";
+                for (var i = 0; i < message.selectedTrips.length; ++i) {
+                    var error = $root.transit_realtime.TripModifications.SelectedTrips.verify(message.selectedTrips[i]);
+                    if (error)
+                        return "selectedTrips." + error;
+                }
+            }
+            if (message.startTimes != null && message.hasOwnProperty("startTimes")) {
+                if (!Array.isArray(message.startTimes))
+                    return "startTimes: array expected";
+                for (var i = 0; i < message.startTimes.length; ++i)
+                    if (!$util.isString(message.startTimes[i]))
+                        return "startTimes: string[] expected";
+            }
+            if (message.serviceDates != null && message.hasOwnProperty("serviceDates")) {
+                if (!Array.isArray(message.serviceDates))
+                    return "serviceDates: array expected";
+                for (var i = 0; i < message.serviceDates.length; ++i)
+                    if (!$util.isString(message.serviceDates[i]))
+                        return "serviceDates: string[] expected";
+            }
+            if (message.modifications != null && message.hasOwnProperty("modifications")) {
+                if (!Array.isArray(message.modifications))
+                    return "modifications: array expected";
+                for (var i = 0; i < message.modifications.length; ++i) {
+                    var error = $root.transit_realtime.TripModifications.Modification.verify(message.modifications[i]);
+                    if (error)
+                        return "modifications." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a TripModifications message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {transit_realtime.TripModifications} TripModifications
+         */
+        TripModifications.fromObject = function fromObject(object) {
+            if (object instanceof $root.transit_realtime.TripModifications)
+                return object;
+            var message = new $root.transit_realtime.TripModifications();
+            if (object.selectedTrips) {
+                if (!Array.isArray(object.selectedTrips))
+                    throw TypeError(".transit_realtime.TripModifications.selectedTrips: array expected");
+                message.selectedTrips = [];
+                for (var i = 0; i < object.selectedTrips.length; ++i) {
+                    if (typeof object.selectedTrips[i] !== "object")
+                        throw TypeError(".transit_realtime.TripModifications.selectedTrips: object expected");
+                    message.selectedTrips[i] = $root.transit_realtime.TripModifications.SelectedTrips.fromObject(object.selectedTrips[i]);
+                }
+            }
+            if (object.startTimes) {
+                if (!Array.isArray(object.startTimes))
+                    throw TypeError(".transit_realtime.TripModifications.startTimes: array expected");
+                message.startTimes = [];
+                for (var i = 0; i < object.startTimes.length; ++i)
+                    message.startTimes[i] = String(object.startTimes[i]);
+            }
+            if (object.serviceDates) {
+                if (!Array.isArray(object.serviceDates))
+                    throw TypeError(".transit_realtime.TripModifications.serviceDates: array expected");
+                message.serviceDates = [];
+                for (var i = 0; i < object.serviceDates.length; ++i)
+                    message.serviceDates[i] = String(object.serviceDates[i]);
+            }
+            if (object.modifications) {
+                if (!Array.isArray(object.modifications))
+                    throw TypeError(".transit_realtime.TripModifications.modifications: array expected");
+                message.modifications = [];
+                for (var i = 0; i < object.modifications.length; ++i) {
+                    if (typeof object.modifications[i] !== "object")
+                        throw TypeError(".transit_realtime.TripModifications.modifications: object expected");
+                    message.modifications[i] = $root.transit_realtime.TripModifications.Modification.fromObject(object.modifications[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TripModifications message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {transit_realtime.TripModifications} message TripModifications
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TripModifications.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults) {
+                object.selectedTrips = [];
+                object.startTimes = [];
+                object.serviceDates = [];
+                object.modifications = [];
+            }
+            if (message.selectedTrips && message.selectedTrips.length) {
+                object.selectedTrips = [];
+                for (var j = 0; j < message.selectedTrips.length; ++j)
+                    object.selectedTrips[j] = $root.transit_realtime.TripModifications.SelectedTrips.toObject(message.selectedTrips[j], options);
+            }
+            if (message.startTimes && message.startTimes.length) {
+                object.startTimes = [];
+                for (var j = 0; j < message.startTimes.length; ++j)
+                    object.startTimes[j] = message.startTimes[j];
+            }
+            if (message.serviceDates && message.serviceDates.length) {
+                object.serviceDates = [];
+                for (var j = 0; j < message.serviceDates.length; ++j)
+                    object.serviceDates[j] = message.serviceDates[j];
+            }
+            if (message.modifications && message.modifications.length) {
+                object.modifications = [];
+                for (var j = 0; j < message.modifications.length; ++j)
+                    object.modifications[j] = $root.transit_realtime.TripModifications.Modification.toObject(message.modifications[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this TripModifications to JSON.
+         * @function toJSON
+         * @memberof transit_realtime.TripModifications
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TripModifications.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for TripModifications
+         * @function getTypeUrl
+         * @memberof transit_realtime.TripModifications
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        TripModifications.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/transit_realtime.TripModifications";
+        };
+
+        TripModifications.Modification = (function() {
+
+            /**
+             * Properties of a Modification.
+             * @memberof transit_realtime.TripModifications
+             * @interface IModification
+             * @property {transit_realtime.IStopSelector|null} [startStopSelector] Modification startStopSelector
+             * @property {transit_realtime.IStopSelector|null} [endStopSelector] Modification endStopSelector
+             * @property {number|null} [propagatedModificationDelay] Modification propagatedModificationDelay
+             * @property {Array.<transit_realtime.IReplacementStop>|null} [replacementStops] Modification replacementStops
+             * @property {string|null} [serviceAlertId] Modification serviceAlertId
+             * @property {number|Long|null} [lastModifiedTime] Modification lastModifiedTime
+             */
+
+            /**
+             * Constructs a new Modification.
+             * @memberof transit_realtime.TripModifications
+             * @classdesc Represents a Modification.
+             * @implements IModification
+             * @constructor
+             * @param {transit_realtime.TripModifications.IModification=} [properties] Properties to set
+             */
+            function Modification(properties) {
+                this.replacementStops = [];
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Modification startStopSelector.
+             * @member {transit_realtime.IStopSelector|null|undefined} startStopSelector
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             */
+            Modification.prototype.startStopSelector = null;
+
+            /**
+             * Modification endStopSelector.
+             * @member {transit_realtime.IStopSelector|null|undefined} endStopSelector
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             */
+            Modification.prototype.endStopSelector = null;
+
+            /**
+             * Modification propagatedModificationDelay.
+             * @member {number} propagatedModificationDelay
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             */
+            Modification.prototype.propagatedModificationDelay = 0;
+
+            /**
+             * Modification replacementStops.
+             * @member {Array.<transit_realtime.IReplacementStop>} replacementStops
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             */
+            Modification.prototype.replacementStops = $util.emptyArray;
+
+            /**
+             * Modification serviceAlertId.
+             * @member {string} serviceAlertId
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             */
+            Modification.prototype.serviceAlertId = "";
+
+            /**
+             * Modification lastModifiedTime.
+             * @member {number|Long} lastModifiedTime
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             */
+            Modification.prototype.lastModifiedTime = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * Creates a new Modification instance using the specified properties.
+             * @function create
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {transit_realtime.TripModifications.IModification=} [properties] Properties to set
+             * @returns {transit_realtime.TripModifications.Modification} Modification instance
+             */
+            Modification.create = function create(properties) {
+                return new Modification(properties);
+            };
+
+            /**
+             * Encodes the specified Modification message. Does not implicitly {@link transit_realtime.TripModifications.Modification.verify|verify} messages.
+             * @function encode
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {transit_realtime.TripModifications.IModification} message Modification message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Modification.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.startStopSelector != null && Object.hasOwnProperty.call(message, "startStopSelector"))
+                    $root.transit_realtime.StopSelector.encode(message.startStopSelector, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                if (message.endStopSelector != null && Object.hasOwnProperty.call(message, "endStopSelector"))
+                    $root.transit_realtime.StopSelector.encode(message.endStopSelector, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                if (message.propagatedModificationDelay != null && Object.hasOwnProperty.call(message, "propagatedModificationDelay"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.propagatedModificationDelay);
+                if (message.replacementStops != null && message.replacementStops.length)
+                    for (var i = 0; i < message.replacementStops.length; ++i)
+                        $root.transit_realtime.ReplacementStop.encode(message.replacementStops[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                if (message.serviceAlertId != null && Object.hasOwnProperty.call(message, "serviceAlertId"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.serviceAlertId);
+                if (message.lastModifiedTime != null && Object.hasOwnProperty.call(message, "lastModifiedTime"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).uint64(message.lastModifiedTime);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Modification message, length delimited. Does not implicitly {@link transit_realtime.TripModifications.Modification.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {transit_realtime.TripModifications.IModification} message Modification message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Modification.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Modification message from the specified reader or buffer.
+             * @function decode
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {transit_realtime.TripModifications.Modification} Modification
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Modification.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.TripModifications.Modification();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.startStopSelector = $root.transit_realtime.StopSelector.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 2: {
+                            message.endStopSelector = $root.transit_realtime.StopSelector.decode(reader, reader.uint32());
+                            break;
+                        }
+                    case 3: {
+                            message.propagatedModificationDelay = reader.int32();
+                            break;
+                        }
+                    case 4: {
+                            if (!(message.replacementStops && message.replacementStops.length))
+                                message.replacementStops = [];
+                            message.replacementStops.push($root.transit_realtime.ReplacementStop.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 5: {
+                            message.serviceAlertId = reader.string();
+                            break;
+                        }
+                    case 6: {
+                            message.lastModifiedTime = reader.uint64();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Modification message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {transit_realtime.TripModifications.Modification} Modification
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Modification.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Modification message.
+             * @function verify
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Modification.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.startStopSelector != null && message.hasOwnProperty("startStopSelector")) {
+                    var error = $root.transit_realtime.StopSelector.verify(message.startStopSelector);
+                    if (error)
+                        return "startStopSelector." + error;
+                }
+                if (message.endStopSelector != null && message.hasOwnProperty("endStopSelector")) {
+                    var error = $root.transit_realtime.StopSelector.verify(message.endStopSelector);
+                    if (error)
+                        return "endStopSelector." + error;
+                }
+                if (message.propagatedModificationDelay != null && message.hasOwnProperty("propagatedModificationDelay"))
+                    if (!$util.isInteger(message.propagatedModificationDelay))
+                        return "propagatedModificationDelay: integer expected";
+                if (message.replacementStops != null && message.hasOwnProperty("replacementStops")) {
+                    if (!Array.isArray(message.replacementStops))
+                        return "replacementStops: array expected";
+                    for (var i = 0; i < message.replacementStops.length; ++i) {
+                        var error = $root.transit_realtime.ReplacementStop.verify(message.replacementStops[i]);
+                        if (error)
+                            return "replacementStops." + error;
+                    }
+                }
+                if (message.serviceAlertId != null && message.hasOwnProperty("serviceAlertId"))
+                    if (!$util.isString(message.serviceAlertId))
+                        return "serviceAlertId: string expected";
+                if (message.lastModifiedTime != null && message.hasOwnProperty("lastModifiedTime"))
+                    if (!$util.isInteger(message.lastModifiedTime) && !(message.lastModifiedTime && $util.isInteger(message.lastModifiedTime.low) && $util.isInteger(message.lastModifiedTime.high)))
+                        return "lastModifiedTime: integer|Long expected";
+                return null;
+            };
+
+            /**
+             * Creates a Modification message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {transit_realtime.TripModifications.Modification} Modification
+             */
+            Modification.fromObject = function fromObject(object) {
+                if (object instanceof $root.transit_realtime.TripModifications.Modification)
+                    return object;
+                var message = new $root.transit_realtime.TripModifications.Modification();
+                if (object.startStopSelector != null) {
+                    if (typeof object.startStopSelector !== "object")
+                        throw TypeError(".transit_realtime.TripModifications.Modification.startStopSelector: object expected");
+                    message.startStopSelector = $root.transit_realtime.StopSelector.fromObject(object.startStopSelector);
+                }
+                if (object.endStopSelector != null) {
+                    if (typeof object.endStopSelector !== "object")
+                        throw TypeError(".transit_realtime.TripModifications.Modification.endStopSelector: object expected");
+                    message.endStopSelector = $root.transit_realtime.StopSelector.fromObject(object.endStopSelector);
+                }
+                if (object.propagatedModificationDelay != null)
+                    message.propagatedModificationDelay = object.propagatedModificationDelay | 0;
+                if (object.replacementStops) {
+                    if (!Array.isArray(object.replacementStops))
+                        throw TypeError(".transit_realtime.TripModifications.Modification.replacementStops: array expected");
+                    message.replacementStops = [];
+                    for (var i = 0; i < object.replacementStops.length; ++i) {
+                        if (typeof object.replacementStops[i] !== "object")
+                            throw TypeError(".transit_realtime.TripModifications.Modification.replacementStops: object expected");
+                        message.replacementStops[i] = $root.transit_realtime.ReplacementStop.fromObject(object.replacementStops[i]);
+                    }
+                }
+                if (object.serviceAlertId != null)
+                    message.serviceAlertId = String(object.serviceAlertId);
+                if (object.lastModifiedTime != null)
+                    if ($util.Long)
+                        (message.lastModifiedTime = $util.Long.fromValue(object.lastModifiedTime)).unsigned = true;
+                    else if (typeof object.lastModifiedTime === "string")
+                        message.lastModifiedTime = parseInt(object.lastModifiedTime, 10);
+                    else if (typeof object.lastModifiedTime === "number")
+                        message.lastModifiedTime = object.lastModifiedTime;
+                    else if (typeof object.lastModifiedTime === "object")
+                        message.lastModifiedTime = new $util.LongBits(object.lastModifiedTime.low >>> 0, object.lastModifiedTime.high >>> 0).toNumber(true);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Modification message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {transit_realtime.TripModifications.Modification} message Modification
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Modification.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.arrays || options.defaults)
+                    object.replacementStops = [];
+                if (options.defaults) {
+                    object.startStopSelector = null;
+                    object.endStopSelector = null;
+                    object.propagatedModificationDelay = 0;
+                    object.serviceAlertId = "";
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, true);
+                        object.lastModifiedTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.lastModifiedTime = options.longs === String ? "0" : 0;
+                }
+                if (message.startStopSelector != null && message.hasOwnProperty("startStopSelector"))
+                    object.startStopSelector = $root.transit_realtime.StopSelector.toObject(message.startStopSelector, options);
+                if (message.endStopSelector != null && message.hasOwnProperty("endStopSelector"))
+                    object.endStopSelector = $root.transit_realtime.StopSelector.toObject(message.endStopSelector, options);
+                if (message.propagatedModificationDelay != null && message.hasOwnProperty("propagatedModificationDelay"))
+                    object.propagatedModificationDelay = message.propagatedModificationDelay;
+                if (message.replacementStops && message.replacementStops.length) {
+                    object.replacementStops = [];
+                    for (var j = 0; j < message.replacementStops.length; ++j)
+                        object.replacementStops[j] = $root.transit_realtime.ReplacementStop.toObject(message.replacementStops[j], options);
+                }
+                if (message.serviceAlertId != null && message.hasOwnProperty("serviceAlertId"))
+                    object.serviceAlertId = message.serviceAlertId;
+                if (message.lastModifiedTime != null && message.hasOwnProperty("lastModifiedTime"))
+                    if (typeof message.lastModifiedTime === "number")
+                        object.lastModifiedTime = options.longs === String ? String(message.lastModifiedTime) : message.lastModifiedTime;
+                    else
+                        object.lastModifiedTime = options.longs === String ? $util.Long.prototype.toString.call(message.lastModifiedTime) : options.longs === Number ? new $util.LongBits(message.lastModifiedTime.low >>> 0, message.lastModifiedTime.high >>> 0).toNumber(true) : message.lastModifiedTime;
+                return object;
+            };
+
+            /**
+             * Converts this Modification to JSON.
+             * @function toJSON
+             * @memberof transit_realtime.TripModifications.Modification
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Modification.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for Modification
+             * @function getTypeUrl
+             * @memberof transit_realtime.TripModifications.Modification
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            Modification.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/transit_realtime.TripModifications.Modification";
+            };
+
+            return Modification;
+        })();
+
+        TripModifications.SelectedTrips = (function() {
+
+            /**
+             * Properties of a SelectedTrips.
+             * @memberof transit_realtime.TripModifications
+             * @interface ISelectedTrips
+             * @property {Array.<string>|null} [tripIds] SelectedTrips tripIds
+             * @property {string|null} [shapeId] SelectedTrips shapeId
+             */
+
+            /**
+             * Constructs a new SelectedTrips.
+             * @memberof transit_realtime.TripModifications
+             * @classdesc Represents a SelectedTrips.
+             * @implements ISelectedTrips
+             * @constructor
+             * @param {transit_realtime.TripModifications.ISelectedTrips=} [properties] Properties to set
+             */
+            function SelectedTrips(properties) {
+                this.tripIds = [];
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * SelectedTrips tripIds.
+             * @member {Array.<string>} tripIds
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @instance
+             */
+            SelectedTrips.prototype.tripIds = $util.emptyArray;
+
+            /**
+             * SelectedTrips shapeId.
+             * @member {string} shapeId
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @instance
+             */
+            SelectedTrips.prototype.shapeId = "";
+
+            /**
+             * Creates a new SelectedTrips instance using the specified properties.
+             * @function create
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {transit_realtime.TripModifications.ISelectedTrips=} [properties] Properties to set
+             * @returns {transit_realtime.TripModifications.SelectedTrips} SelectedTrips instance
+             */
+            SelectedTrips.create = function create(properties) {
+                return new SelectedTrips(properties);
+            };
+
+            /**
+             * Encodes the specified SelectedTrips message. Does not implicitly {@link transit_realtime.TripModifications.SelectedTrips.verify|verify} messages.
+             * @function encode
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {transit_realtime.TripModifications.ISelectedTrips} message SelectedTrips message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            SelectedTrips.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.tripIds != null && message.tripIds.length)
+                    for (var i = 0; i < message.tripIds.length; ++i)
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.tripIds[i]);
+                if (message.shapeId != null && Object.hasOwnProperty.call(message, "shapeId"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.shapeId);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified SelectedTrips message, length delimited. Does not implicitly {@link transit_realtime.TripModifications.SelectedTrips.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {transit_realtime.TripModifications.ISelectedTrips} message SelectedTrips message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            SelectedTrips.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a SelectedTrips message from the specified reader or buffer.
+             * @function decode
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {transit_realtime.TripModifications.SelectedTrips} SelectedTrips
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            SelectedTrips.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.TripModifications.SelectedTrips();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1: {
+                            if (!(message.tripIds && message.tripIds.length))
+                                message.tripIds = [];
+                            message.tripIds.push(reader.string());
+                            break;
+                        }
+                    case 2: {
+                            message.shapeId = reader.string();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a SelectedTrips message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {transit_realtime.TripModifications.SelectedTrips} SelectedTrips
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            SelectedTrips.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a SelectedTrips message.
+             * @function verify
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            SelectedTrips.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.tripIds != null && message.hasOwnProperty("tripIds")) {
+                    if (!Array.isArray(message.tripIds))
+                        return "tripIds: array expected";
+                    for (var i = 0; i < message.tripIds.length; ++i)
+                        if (!$util.isString(message.tripIds[i]))
+                            return "tripIds: string[] expected";
+                }
+                if (message.shapeId != null && message.hasOwnProperty("shapeId"))
+                    if (!$util.isString(message.shapeId))
+                        return "shapeId: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a SelectedTrips message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {transit_realtime.TripModifications.SelectedTrips} SelectedTrips
+             */
+            SelectedTrips.fromObject = function fromObject(object) {
+                if (object instanceof $root.transit_realtime.TripModifications.SelectedTrips)
+                    return object;
+                var message = new $root.transit_realtime.TripModifications.SelectedTrips();
+                if (object.tripIds) {
+                    if (!Array.isArray(object.tripIds))
+                        throw TypeError(".transit_realtime.TripModifications.SelectedTrips.tripIds: array expected");
+                    message.tripIds = [];
+                    for (var i = 0; i < object.tripIds.length; ++i)
+                        message.tripIds[i] = String(object.tripIds[i]);
+                }
+                if (object.shapeId != null)
+                    message.shapeId = String(object.shapeId);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a SelectedTrips message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {transit_realtime.TripModifications.SelectedTrips} message SelectedTrips
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            SelectedTrips.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.arrays || options.defaults)
+                    object.tripIds = [];
+                if (options.defaults)
+                    object.shapeId = "";
+                if (message.tripIds && message.tripIds.length) {
+                    object.tripIds = [];
+                    for (var j = 0; j < message.tripIds.length; ++j)
+                        object.tripIds[j] = message.tripIds[j];
+                }
+                if (message.shapeId != null && message.hasOwnProperty("shapeId"))
+                    object.shapeId = message.shapeId;
+                return object;
+            };
+
+            /**
+             * Converts this SelectedTrips to JSON.
+             * @function toJSON
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            SelectedTrips.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for SelectedTrips
+             * @function getTypeUrl
+             * @memberof transit_realtime.TripModifications.SelectedTrips
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            SelectedTrips.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/transit_realtime.TripModifications.SelectedTrips";
+            };
+
+            return SelectedTrips;
+        })();
+
+        return TripModifications;
+    })();
+
+    transit_realtime.StopSelector = (function() {
+
+        /**
+         * Properties of a StopSelector.
+         * @memberof transit_realtime
+         * @interface IStopSelector
+         * @property {number|null} [stopSequence] StopSelector stopSequence
+         * @property {string|null} [stopId] StopSelector stopId
+         */
+
+        /**
+         * Constructs a new StopSelector.
+         * @memberof transit_realtime
+         * @classdesc Represents a StopSelector.
+         * @implements IStopSelector
+         * @constructor
+         * @param {transit_realtime.IStopSelector=} [properties] Properties to set
+         */
+        function StopSelector(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * StopSelector stopSequence.
+         * @member {number} stopSequence
+         * @memberof transit_realtime.StopSelector
+         * @instance
+         */
+        StopSelector.prototype.stopSequence = 0;
+
+        /**
+         * StopSelector stopId.
+         * @member {string} stopId
+         * @memberof transit_realtime.StopSelector
+         * @instance
+         */
+        StopSelector.prototype.stopId = "";
+
+        /**
+         * Creates a new StopSelector instance using the specified properties.
+         * @function create
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {transit_realtime.IStopSelector=} [properties] Properties to set
+         * @returns {transit_realtime.StopSelector} StopSelector instance
+         */
+        StopSelector.create = function create(properties) {
+            return new StopSelector(properties);
+        };
+
+        /**
+         * Encodes the specified StopSelector message. Does not implicitly {@link transit_realtime.StopSelector.verify|verify} messages.
+         * @function encode
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {transit_realtime.IStopSelector} message StopSelector message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        StopSelector.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.stopSequence != null && Object.hasOwnProperty.call(message, "stopSequence"))
+                writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.stopSequence);
+            if (message.stopId != null && Object.hasOwnProperty.call(message, "stopId"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.stopId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified StopSelector message, length delimited. Does not implicitly {@link transit_realtime.StopSelector.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {transit_realtime.IStopSelector} message StopSelector message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        StopSelector.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a StopSelector message from the specified reader or buffer.
+         * @function decode
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {transit_realtime.StopSelector} StopSelector
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        StopSelector.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.StopSelector();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.stopSequence = reader.uint32();
+                        break;
+                    }
+                case 2: {
+                        message.stopId = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a StopSelector message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {transit_realtime.StopSelector} StopSelector
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        StopSelector.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a StopSelector message.
+         * @function verify
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        StopSelector.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.stopSequence != null && message.hasOwnProperty("stopSequence"))
+                if (!$util.isInteger(message.stopSequence))
+                    return "stopSequence: integer expected";
+            if (message.stopId != null && message.hasOwnProperty("stopId"))
+                if (!$util.isString(message.stopId))
+                    return "stopId: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a StopSelector message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {transit_realtime.StopSelector} StopSelector
+         */
+        StopSelector.fromObject = function fromObject(object) {
+            if (object instanceof $root.transit_realtime.StopSelector)
+                return object;
+            var message = new $root.transit_realtime.StopSelector();
+            if (object.stopSequence != null)
+                message.stopSequence = object.stopSequence >>> 0;
+            if (object.stopId != null)
+                message.stopId = String(object.stopId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a StopSelector message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {transit_realtime.StopSelector} message StopSelector
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        StopSelector.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.stopSequence = 0;
+                object.stopId = "";
+            }
+            if (message.stopSequence != null && message.hasOwnProperty("stopSequence"))
+                object.stopSequence = message.stopSequence;
+            if (message.stopId != null && message.hasOwnProperty("stopId"))
+                object.stopId = message.stopId;
+            return object;
+        };
+
+        /**
+         * Converts this StopSelector to JSON.
+         * @function toJSON
+         * @memberof transit_realtime.StopSelector
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        StopSelector.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for StopSelector
+         * @function getTypeUrl
+         * @memberof transit_realtime.StopSelector
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        StopSelector.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/transit_realtime.StopSelector";
+        };
+
+        return StopSelector;
+    })();
+
+    transit_realtime.ReplacementStop = (function() {
+
+        /**
+         * Properties of a ReplacementStop.
+         * @memberof transit_realtime
+         * @interface IReplacementStop
+         * @property {number|null} [travelTimeToStop] ReplacementStop travelTimeToStop
+         * @property {string|null} [stopId] ReplacementStop stopId
+         */
+
+        /**
+         * Constructs a new ReplacementStop.
+         * @memberof transit_realtime
+         * @classdesc Represents a ReplacementStop.
+         * @implements IReplacementStop
+         * @constructor
+         * @param {transit_realtime.IReplacementStop=} [properties] Properties to set
+         */
+        function ReplacementStop(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ReplacementStop travelTimeToStop.
+         * @member {number} travelTimeToStop
+         * @memberof transit_realtime.ReplacementStop
+         * @instance
+         */
+        ReplacementStop.prototype.travelTimeToStop = 0;
+
+        /**
+         * ReplacementStop stopId.
+         * @member {string} stopId
+         * @memberof transit_realtime.ReplacementStop
+         * @instance
+         */
+        ReplacementStop.prototype.stopId = "";
+
+        /**
+         * Creates a new ReplacementStop instance using the specified properties.
+         * @function create
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {transit_realtime.IReplacementStop=} [properties] Properties to set
+         * @returns {transit_realtime.ReplacementStop} ReplacementStop instance
+         */
+        ReplacementStop.create = function create(properties) {
+            return new ReplacementStop(properties);
+        };
+
+        /**
+         * Encodes the specified ReplacementStop message. Does not implicitly {@link transit_realtime.ReplacementStop.verify|verify} messages.
+         * @function encode
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {transit_realtime.IReplacementStop} message ReplacementStop message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReplacementStop.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.travelTimeToStop != null && Object.hasOwnProperty.call(message, "travelTimeToStop"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.travelTimeToStop);
+            if (message.stopId != null && Object.hasOwnProperty.call(message, "stopId"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.stopId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReplacementStop message, length delimited. Does not implicitly {@link transit_realtime.ReplacementStop.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {transit_realtime.IReplacementStop} message ReplacementStop message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReplacementStop.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReplacementStop message from the specified reader or buffer.
+         * @function decode
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {transit_realtime.ReplacementStop} ReplacementStop
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReplacementStop.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.transit_realtime.ReplacementStop();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.travelTimeToStop = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.stopId = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReplacementStop message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {transit_realtime.ReplacementStop} ReplacementStop
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReplacementStop.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReplacementStop message.
+         * @function verify
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReplacementStop.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.travelTimeToStop != null && message.hasOwnProperty("travelTimeToStop"))
+                if (!$util.isInteger(message.travelTimeToStop))
+                    return "travelTimeToStop: integer expected";
+            if (message.stopId != null && message.hasOwnProperty("stopId"))
+                if (!$util.isString(message.stopId))
+                    return "stopId: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a ReplacementStop message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {transit_realtime.ReplacementStop} ReplacementStop
+         */
+        ReplacementStop.fromObject = function fromObject(object) {
+            if (object instanceof $root.transit_realtime.ReplacementStop)
+                return object;
+            var message = new $root.transit_realtime.ReplacementStop();
+            if (object.travelTimeToStop != null)
+                message.travelTimeToStop = object.travelTimeToStop | 0;
+            if (object.stopId != null)
+                message.stopId = String(object.stopId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ReplacementStop message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {transit_realtime.ReplacementStop} message ReplacementStop
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReplacementStop.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.travelTimeToStop = 0;
+                object.stopId = "";
+            }
+            if (message.travelTimeToStop != null && message.hasOwnProperty("travelTimeToStop"))
+                object.travelTimeToStop = message.travelTimeToStop;
+            if (message.stopId != null && message.hasOwnProperty("stopId"))
+                object.stopId = message.stopId;
+            return object;
+        };
+
+        /**
+         * Converts this ReplacementStop to JSON.
+         * @function toJSON
+         * @memberof transit_realtime.ReplacementStop
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReplacementStop.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ReplacementStop
+         * @function getTypeUrl
+         * @memberof transit_realtime.ReplacementStop
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ReplacementStop.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/transit_realtime.ReplacementStop";
+        };
+
+        return ReplacementStop;
     })();
 
     return transit_realtime;
