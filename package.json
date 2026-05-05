@@ -1,0 +1,6 @@
+{
+  "name": "gtfs-realtime-bindings",
+  "version": "1.1.1",
+  "main": "nodejs/gtfs-realtime.js",
+  "types": "nodejs/gtfs-realtime.d.ts"
+}
